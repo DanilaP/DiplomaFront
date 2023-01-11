@@ -1,0 +1,38 @@
+.ErrorModalBox {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.195);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    & .content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 25px;
+        width: 400px;
+        height: 150px;
+        font-size: 20px;
+        background-color: rgba(0, 0, 0, 0.500);
+    }
+    & .close__button {
+        color: white;
+        font-size: 30px;
+        position: absolute;
+        margin-left: 350px;
+        margin-top: -115px;
+        transform: scaleY(0.8);
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+    & .content__error {
+        text-align: center;
+        color: white;
+    }
+}
+.not__shown {
+    display: none;
+}

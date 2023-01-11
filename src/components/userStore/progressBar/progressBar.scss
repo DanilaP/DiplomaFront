@@ -1,0 +1,13 @@
+.ProgressBar {
+    display: flex;
+    flex-direction: column;
+
+    & progress {
+        height: 50px;
+    }
+    & span {
+        text-align: center;
+        color: black;
+        margin-top: -37px;
+    }
+}

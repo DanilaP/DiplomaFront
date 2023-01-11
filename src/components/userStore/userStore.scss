@@ -1,0 +1,205 @@
+.UserStore {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    & .navigation__menu {
+        color: white;
+        width: 150px;
+        padding: 40px;
+        font-size: 15px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        & .item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid grey;
+            padding: 20px;
+
+            &:hover {
+                cursor: pointer;
+                color: white;
+                border: 1px solid aqua;
+                background-color: rgba(0, 255, 255, 0.2);
+            }
+        }
+    }
+    & .store {
+        width: 1080px;
+        padding: 40px;
+        height: 600px;
+        background-color: rgba(0, 0, 0, 0.6);
+        border: 1px solid grey;
+        display: flex;
+        flex-direction: column;
+        color: white;
+        align-items: center;
+
+        
+        & .store__menu {
+            width: 1100px;
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+
+            & input {
+                width: 120px;
+                font-size: 12px;
+                outline: none;
+                background-color: rgba(0, 0, 0, 0);
+                color: white;
+                border: 1px solid grey;
+                padding-left: 30px;
+            }
+            & input[type='file'] {
+                width: 180px;
+                height: 30px;
+                position: absolute;
+                opacity: 0;
+
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+            & .div__btn {
+                width: 200px;
+                height: 30px;
+                border: 1px solid white;
+                padding: 5px;
+                background-color: rgba(255, 255, 255, 0);;
+                
+                &:hover {
+                    border: 1px solid aqua;
+                    background-color: rgba(255, 255, 255, 0);
+                    color: aqua;
+                }
+            }
+            & div {
+                width: 200px;
+                height: 30px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: rgba(255, 255, 255, 0.381);
+
+                &:hover {
+                    cursor: pointer;
+                    color: black;
+                    background-color: rgba(0, 255, 255, 0.845);
+                }
+            }
+        }
+        & .storage__files {
+            display: flex;
+            gap: 10px;
+        }
+        & .files {
+            width: 800px;
+            height: 450px;
+            border: 1px solid grey;
+            margin-top: 50px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            align-items: center;
+            justify-items: center;
+            overflow-y: scroll;
+            padding-bottom: 50px;
+            gap: 20px;
+
+            &::-webkit-scrollbar {
+                width: 1px;               
+              }
+            &::-webkit-scrollbar-track {
+                background: rgba(0, 255, 255, 0.579);       
+            }
+            &::-webkit-scrollbar-thumb {
+                background-color: black;   
+                border-radius: 20px;      
+                border: 1px solid white;
+            }
+            & .file {
+                height: 150px;
+                width: 150px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                margin-top: 50px;
+                gap: 10px;
+
+                &:hover {
+                    border: 1px solid white;
+                    margin-top: 48px;
+
+                    & .delete__button {
+                        opacity: 1;
+                        position: relative;
+                        margin-top: 30px;
+                        margin-left: 120px;
+                    }
+                    & img {
+                        margin-top: -43.5px;
+                    }
+                }
+                & .delete__button {
+                    font-size: 30px;
+                    transform: scaleY(0.8);
+                    color: white;
+                    opacity: 0;
+
+                    &:hover {
+                        color: aqua;
+                    }
+                }
+                & img {
+                    pointer-events: none;
+                    margin-top: -14px;
+                }
+                & span {
+
+                    &:hover {
+                        color: aqua;
+                    }
+                }
+                &:hover {
+                    cursor: pointer;
+                    //border: 1px solid aqua;
+                }
+            }
+        }
+        & .storage__settings {
+            width: 250px;
+            height: 500px;
+            margin-top: 50px;
+            border: 1px solid grey;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            & .statisticOfStorage {
+                font-size: 14px;
+                display: flex;
+                align-items: right;
+                justify-content: center;
+                flex-direction: column;
+                gap: 10px;
+                margin-top: -350px;
+                position: absolute;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 1420px) {
+    .UserStore {
+        
+    }
+}

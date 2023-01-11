@@ -1,0 +1,61 @@
+.Modal {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    & .content {
+        width: 500px;
+        height: 300px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        flex-direction: column;
+        gap: 10px;
+        background-color: rgba(0, 0, 0, 0.80);
+    }
+    & input {
+        width: 270px;
+        font-size: 15px;
+        border: 1px solid white;
+        outline: none;
+        background-color: rgba(0, 0, 0, 0.5);
+        padding-left: 30px;
+        height: 40px;
+        color: white;
+
+        &::placeholder {
+            color: white;
+            opacity: 0.8;
+        }
+    }
+    & button {
+        width: 200px;
+        height: 40px;
+        border: 0px;
+        background-color: rgba(220, 20, 60, 0.5);
+        color: white;
+        transition: 0.5s;
+        
+        &:hover {
+            cursor: pointer;
+            background-color: rgba(220, 20, 60, 0.8);
+        }
+    }
+    & .close__button {
+        color: white;
+        font-size: 30px;
+        position: absolute;
+        margin-left: 470px;
+        margin-top: -265px;
+        transform: scaleY(0.8);
+
+        &:hover {
+            color: aqua;
+            cursor: pointer;
+        }
+    }
+}

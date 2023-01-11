@@ -1,0 +1,23 @@
+.menu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    background-color: crimson;
+    backdrop-filter: blur(10px);
+    height: 40px;
+
+    & div {
+        height: 50px;
+        width: 150px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+
+        &:hover {
+            cursor: pointer;
+            
+        }
+    }
+}

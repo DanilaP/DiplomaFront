@@ -1,0 +1,36 @@
+.ErrorBox {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    
+    & .error__text {
+        display: flex;
+        color: crimson;
+        width: 400px;
+        height: 200px;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        background-color: rgba(0, 0, 0, 0.9);
+        border: 1px solid grey;
+        padding: 10px;
+
+        & closebutton {
+            position: absolute;
+            margin-left: 380px;
+            margin-top: -180px;
+            color: white;
+            font-size: 30px;
+            transform: scaleY(0.8);
+
+            &:hover {
+                cursor: pointer;
+                color: aqua;
+            }
+        }
+    }
+}
