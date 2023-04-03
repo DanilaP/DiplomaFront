@@ -6,9 +6,11 @@ import { useState } from 'react';
 import ChangeFileNameModal from './changeFileNameModal/changeFileNameModal';
 import ProgressBar from './progressBar/progressBar';
 import videoicon from '../../Images/videopng.png';
+import folderImage from '../../Images/folderImage.png';
 import pdficon from '../../Images/pdf.png';
 import excelicon from '../../Images/excel.png';
 import wordicon from '../../Images/word.png';
+import audioIcon from '../../Images/audioIcon.png';
 import ImageSlider from './imageSlider/imageSlider';
 import VideoPlayer from './videoPlayer/videoPlayer';
 import store from '../../store';
@@ -26,7 +28,7 @@ function UserStore() {
     const [videoShown, setVideoShown] = useState();
     const [choosenFilePath, setChoosenFilePath] = useState();
     const [findedFileName, setFindedFileName] = useState();
-
+    
     const userObjectFiles = useSelector(store => store.userFiles);
 
     const uploadFile = async (file) => {
@@ -123,7 +125,7 @@ function UserStore() {
                     <input onKeyDown={findFileByName} onChange={(e) => setFindedFileName(e.target.value)} type = "text" placeholder='Поиск файла'/>
 
                     <div className='upload__main'>
-                        <input accept="image/*,video/*,.doc,.pdf,.xls" onChange={(e) => uploadFile(e.target.files)} type = "file"></input>
+                        <input accept="image/*,video/*,.doc,.pdf,.xls, audio/*" onChange={(e) => uploadFile(e.target.files)} type = "file"></input>
                         <div className='upload__file'>Загрузить файл</div>
                     </div>
                 </div>
@@ -185,6 +187,19 @@ function UserStore() {
                                             <a href={e.path}>
                                                 <div>
                                                     <img width={"150px"} height={"150px"} src = {excelicon}/>
+                                                </div>
+                                            </a>
+                                        <span onClick={() => changeFileName(e.fileName)}>{e.fileName}</span>
+                                    </div>
+                                )
+                            }
+                            else if (e.type.indexOf('audio') > -1) {
+                                return (
+                                    <div key={id} className="file">
+                                        <div onClick={() => deleteFile(e.path)} className="delete__button">x</div>
+                                            <a href={e.path}>
+                                                <div>
+                                                    <img width={"150px"} height={"150px"} src = {audioIcon}/>
                                                 </div>
                                             </a>
                                         <span onClick={() => changeFileName(e.fileName)}>{e.fileName}</span>

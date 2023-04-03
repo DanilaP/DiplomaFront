@@ -11,7 +11,7 @@ function Profile() {
     const history = useNavigate();
     const [user, setUser] = useState({});
     const [showModal, setShowModal] = useState(false);
-    const [secretCode, setSecretCode] = useState();
+    const [secretCode, setSecretCode] = useState("");
 
     const goBack = () => {
         history('/Store');
@@ -76,8 +76,8 @@ function Profile() {
                         <div className="user__password">**********</div>
                     </div>
                     <div className="change__secret__code">
-                        <input onChange={(e) => setSecretCode(e.target.value)} type = "text" />
-                        <button onClick={changeSecretCode}>Сменить код</button>
+                        <input placeholder='Новый код доступа' onChange={(e) => setSecretCode(e.target.value)} type = "text" />
+                        <button onClick={changeSecretCode}>Send</button>
                     </div>
                     <div className="link__to__show__store">
                         <p>{"http://localhost:3000/SecretAccessForm/"+user.id}</p>

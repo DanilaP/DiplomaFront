@@ -10,9 +10,9 @@ function StoreForShowing({arrayOfFiles}) {
     return (
         <div className="StoreForShowing">
             <div className="store">
-                {arrayOfFiles.map((e) => {
+                {arrayOfFiles.map((e, index) => {
                     return (
-                        <div className="file">
+                        <div key={index} className="file">
                             <a target="_blank" name = {e.fileName} href = {e.path}>
                                 <img src = {allFilesIcon}/>
                             </a>

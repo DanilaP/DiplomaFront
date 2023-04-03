@@ -6,20 +6,20 @@ import './App.css';
 
 
 function App() {
-  const history = useNavigate();
-  useEffect(() => {
-      if (localStorage.getItem("token")) {
-        history("/Profile")
-      }
-      else {
-        history("/Login")
-      }
-  })
-  return (
-    <div className="App">
-        
-    </div>
-  );
+    const history = useNavigate();
+    useEffect(() => {
+        if (localStorage.getItem("token")) {
+            history("/Profile")
+        }
+        else {
+            history("/Login")
+        }
+    })
+    return (
+        <div className="App">
+
+        </div>
+    );
 }
 
 
