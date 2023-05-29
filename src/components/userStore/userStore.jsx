@@ -15,6 +15,8 @@ import ImageSlider from './imageSlider/imageSlider';
 import VideoPlayer from './videoPlayer/videoPlayer';
 import store from '../../store';
 import { useSelector } from 'react-redux';
+import ChangeFolderNameModal from './changeFolderNameModal/changeFolderNameModal';
+import CreatedFolderModal from './createFolderModal/createFolderModal';
 
 function UserStore() {
     const history = useNavigate();
@@ -28,13 +30,30 @@ function UserStore() {
     const [videoShown, setVideoShown] = useState();
     const [choosenFilePath, setChoosenFilePath] = useState();
     const [findedFileName, setFindedFileName] = useState();
-    
+
     const userObjectFiles = useSelector(store => store.userFiles);
+
+    const [choosenFolderId, setChoosenFolderId] = useState(0);
+    const [isChangeFolderName, setIsChangeFolderName] = useState(false);
+    const [historyOfFolders, setHistoryOfFolders] = useState([0]);
+    const [historyOfLastFolder, setHistoryOfLastFolder] = useState();
+    const [isCreateFolder, setIsCreateFolder] = useState(false);
 
     const uploadFile = async (file) => {
         let formData = new FormData();
         formData.append('uploadFile', file[0]);
-        store.dispatch({type: "UPLOADEDFILE", payload: formData});
+        formData.append('folderId', choosenFolderId);
+        //store.dispatch({type: "UPLOADEDFILE", payload: formData});
+        await $api.post('http://localhost:5000/uploadFiles', formData)
+        .then((res) => {
+            let files = res.data.files.filter(el => el.folderId === choosenFolderId);
+            setUser({...user, files: files});
+            setSortedFiles(files);
+            console.log(res);
+        })
+        .catch((err) => {
+            console.log(err);
+        })
     }
     const sortFiles = (param) => {
         setParametrOfSort(param);
@@ -58,30 +77,33 @@ function UserStore() {
             setIsChangeFileName(true);
         }
     }
+    const changeFolderName = async (folderId) => {
+        setHistoryOfLastFolder(choosenFolderId);
+        await setChoosenFolderId(folderId);
+        isChangeFolderName ? setIsChangeFolderName(false) : setIsChangeFolderName(true);
+    }
+    const updateFolders = async (newFolders) => {
+        await setChoosenFolderId(historyOfLastFolder);
+        setUser({...user, folders: newFolders.filter(el => el.parentFolderId == historyOfLastFolder)});
+    }
     const updateFiles = (newFiles) => {
         user.files = newFiles;
-        setSortedFiles(newFiles);
+        setSortedFiles(newFiles.filter(el => el.folderId === choosenFolderId));
         sortFiles(parametrOfSort);
     }
     const deleteFile = async (filePath) => {
-        store.dispatch({type: "DELETEDFILEPATH", payload: filePath})
-    }
-    useEffect(() => {
-        $api.get('http://localhost:5000/auth/getUserData')
+        //store.dispatch({type: "DELETEDFILEPATH", payload: filePath})
+        await $api.post('http://localhost:5000/files/deleteFile', {deletedFilePath: filePath})
         .then((res) => {
-            store.dispatch({type: "USER", payload: res.data.userData});
-            console.log(res);
-            setUser(res.data.userData);
-            setSortedFiles(res.data.userData.files);
-            calculateAllFileSize(res.data.userData.files);
+            setSortedFiles(res.data.files.filter(el => el.folderId === choosenFolderId));
         })
-        .catch((error) => {
-            console.log(error);
+        .catch((err) => {
+            console.log(err);
         })
-    }, [])
+    }
     const calculateAllFileSize = (arrOfFiles) => {
         let sum = 0;
-        arrOfFiles?.map((e) => {
+        sortedFiles?.map((e) => {
             sum += Number(e.size);
         })
         sum = sum.toFixed(2);
@@ -103,6 +125,59 @@ function UserStore() {
             setSortedFiles(user.files);
         }
     }
+    const createFolder = async () => {
+        isCreateFolder ? setIsCreateFolder(false) : setIsCreateFolder(true);
+    }
+    const updateUserFolders = async (folders) => {
+        setUser({...user, folders: folders});
+    }
+    const deleteFolder = async (folderId) => {
+        await $api.post('http://localhost:5000/files/deleteFolder', {folderId: folderId, parentFolderId: choosenFolderId})
+        .then((res) => {
+            setUser({...user, folders: res.data.folders});
+            console.log(res.data);
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+    }
+    const getFilesFromFolders = async (folderId) => {
+        await $api.post('http://localhost:5000/getFilesFromFolder', {folderId: folderId})
+        .then((res) => {
+            setUser({...user, folders: res.data.folders, files: res.data.files});
+            setSortedFiles(res.data.files);
+            setChoosenFolderId(folderId);
+            setHistoryOfFolders([...historyOfFolders, folderId]);
+            console.log(res.data);
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+        console.log([...historyOfFolders, folderId]);
+    }
+    const backToFolder = async () => {
+        let lastFolder;
+        if (historyOfFolders.length >= 3) {
+            lastFolder = historyOfFolders[historyOfFolders.length-2];
+        }
+        else lastFolder = historyOfFolders[0];
+
+        await $api.post('http://localhost:5000/getFilesFromFolder', {folderId: lastFolder})
+        .then((res) => {
+            setUser({...user, folders: res.data.folders, files: res.data.files});
+            setSortedFiles(res.data.files);
+            setChoosenFolderId(lastFolder);
+            if (historyOfFolders.length !== 1) {
+                let newHistory = historyOfFolders;
+                newHistory.pop();
+                setHistoryOfFolders(newHistory);
+            }
+            console.log(res.data);
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+    }
     useEffect(() => {
         calculateAllFileSize(user?.files);
     }, [user])
@@ -111,11 +186,24 @@ function UserStore() {
         setSortedFiles(userObjectFiles);
         sortFiles(parametrOfSort);
     }, [userObjectFiles])
+    useEffect(() => {
+        $api.post('http://localhost:5000/getFilesFromFolder', {folderId: choosenFolderId})
+        .then((res) => {
+            setUser({...user, folders: res.data.folders, files: res.data.files});
+            setSortedFiles(res.data.files);
+            console.log(res.data);
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+    }, [])
     return (
         <div className="UserStore">
             { sliderShown ? <ImageSlider image = {choosenFilePath} openSlider = {openSlider} /> : null  }
             { videoShown ? <VideoPlayer image = {choosenFilePath} openVideo = {openVideo} /> : null  }
             { isChangeFileName ? <ChangeFileNameModal updateFiles = {updateFiles} previosname = {previosname} hide = {changeFileName} /> : null }
+            { isChangeFolderName ? <ChangeFolderNameModal changeFolders = {updateFolders} folderId = {choosenFolderId} hide = {changeFolderName} /> : null }
+            { isCreateFolder ? <CreatedFolderModal updateUserFolders = {updateUserFolders} choosenFolderId = {choosenFolderId} hide = {createFolder} /> : null }
             <div className="store">
                 <div className="store__menu">
                     <div onClick={() => sortFiles("all")} className='div__btn'>Все файлы</div>
@@ -207,11 +295,26 @@ function UserStore() {
                                 )
                             }
                         })}
+                        {user?.folders?.map((e, id) => {
+                            return (
+                                <div key={id} className="file">
+                                    <div onClick={() => deleteFolder(e.folderId)} className="delete__button">x</div>
+                                        <a>
+                                            <div onClick={() => getFilesFromFolders(e.folderId)}>
+                                                <img width={"150px"} height={"150px"} src = {folderImage}/>
+                                            </div>
+                                        </a>
+                                    <span onClick={() => changeFolderName(e.folderId)}>{e.folderName}</span>
+                                </div>
+                            )
+                        })}
                     </div>
                     <div className="storage__settings">
                         <div className="navigation__menu">
                             <div onClick={() => history("/Profile")} className='item'>Мой профиль</div>
                             <div onClick={() => history("/Statistic")} className='item'>Статистика</div>
+                            <button onClick={backToFolder} className="back__to__folder__button">Назад</button>
+                            <div onClick={createFolder} className="item">Создать папку</div>
                          </div>
                         <div className="header">Вместимость хранилища</div>
                         <ProgressBar percentageNew={sizeOfUserFiles} />
