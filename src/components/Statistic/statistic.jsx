@@ -53,7 +53,7 @@ function Statistic() {
     const canvas = useRef();
     
     useEffect(() => {
-        $api.get('http://localhost:5000/auth/getUserData')
+        $api.get('https://backend-danila123.amvera.io/auth/getUserData')
             .then((res) => {
                 setUserData(res.data.userData);
                 let countOfFiles = countOfFilesByType;

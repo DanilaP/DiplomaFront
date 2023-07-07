@@ -13,7 +13,7 @@ function UserStoreEnter() {
     const [userFiles, setUserFiles] = useState([]);
 
     const sendCode = () => {
-        $api.post('http://localhost:5000/profile/getUserDataById', {id: params.id, secretAccessCode: enteredCode})
+        $api.post('https://backend-danila123.amvera.io/profile/getUserDataById', {id: params.id, secretAccessCode: enteredCode})
         .then((res) => {
             setShowStore(true);
             setUserFiles(res.data.userData.files)

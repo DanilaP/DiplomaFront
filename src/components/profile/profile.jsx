@@ -27,7 +27,7 @@ function Profile() {
         let formData = new FormData();
         formData.append('uploadFile', e[0]);
         
-        await $api.post('http://localhost:5000/upload', formData)
+        await $api.post('https://backend-danila123.amvera.io/upload', formData)
         .then((res) => {
             console.log(res);
             setUser({...user, avatar: res.data.avatar})
@@ -38,7 +38,7 @@ function Profile() {
     }
     const changeSecretCode = () => {
         if (secretCode != "") {
-            $api.post('http://localhost:5000/profile/changeUserSecretCode', {newSecretAccessCode: secretCode})
+            $api.post('https://backend-danila123.amvera.io/profile/changeUserSecretCode', {newSecretAccessCode: secretCode})
             .then((res) => {
                 console.log(res);
             })
@@ -49,7 +49,7 @@ function Profile() {
         else return;
     }
     useEffect(() => {
-        $api.get('http://localhost:5000/auth/getUserData')
+        $api.get('https://backend-danila123.amvera.io/auth/getUserData')
         .then((res) => {
             console.log(res.data.userData);
             setUser(res.data.userData);

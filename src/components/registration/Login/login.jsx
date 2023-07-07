@@ -19,7 +19,7 @@ function Login() {
             userPassword: userPassword
         }
         if ((userPassword.length >= 6) && (rule.test(userEmail))) {
-            $api.post('http://localhost:5000/auth/registration', user)
+            $api.post('https://backend-danila123.amvera.io/auth/registration', user)
             .then((res) => {
                 localStorage.setItem("token", res.data.token);
                 history("/Profile");
