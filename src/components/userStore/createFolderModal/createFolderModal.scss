@@ -7,7 +7,8 @@
     align-items: center;
     justify-content: center;
     backdrop-filter: blur(10px);
-    
+    z-index: 100;
+
     & .content {
         display: flex;
         align-items: center;
@@ -48,6 +49,21 @@
             background-color: crimson;
             color: white;
             font-size: 15px;
+        }
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .createFolderModal {
+        .content {
+            width: 300px;
+
+            & input {
+                width: 200px;
+            }
+            & .close__button {
+                margin-left: 260px;
+            }
         }
     }
 }

@@ -24,6 +24,7 @@
             font-size: 30px;
             transform: scaleY(0.75);
             margin-left: 85vw;
+            margin-top: -75px;
             
             &:hover {
                 cursor: pointer;
@@ -39,6 +40,46 @@
             justify-content: center;
             width: 800px;
             height: 500px;
+        }
+    }
+}
+
+
+@media screen and (max-width: 920px) {
+    .Statistic {
+        & .main__statistic {
+            & .back__button {
+                margin-top: -300px;
+            }
+            & .graphics {
+
+                & canvas {
+                    width: 500px;
+                    height: 300px;  
+                }
+                
+                width: 500px;
+                height: 300px;
+            }
+        }
+    }
+}
+@media screen and (max-width: 560px) {
+    .Statistic {
+        & .main__statistic {
+            & .back__button {
+                margin-top: -250px;
+                margin-left: 280px;
+            }
+            & .graphics {
+                width: 350px;
+                height: 400px;
+
+                & canvas {
+                    width: 300px;
+                    height: 500px;  
+                }
+            }
         }
     }
 }

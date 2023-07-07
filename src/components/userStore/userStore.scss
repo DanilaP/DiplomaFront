@@ -257,6 +257,12 @@
                     width: 100px;
                     height: 100px;
 
+                    & .delete__button {
+                        opacity: 1;
+                        position: relative;
+                        margin-top: 30px;
+                        margin-left: 120px;
+                    }
                     & img {
                         width: 100px;
                         height: 100px;
@@ -332,9 +338,13 @@
                             box-sizing: border-box;
                             text-align: center;
                             width: 100px;
-                            height: 30px;
+                            height: 20px;
                             font-size: 11px;
                             padding: 0;
+                        }
+                        & .back__to__folder__button {
+                            width: 50px;
+                            height: 25px;
                         }
                     }
                     & .header {
@@ -358,6 +368,23 @@
     .UserStore {
         & .store {
             width: 500px;
+
+            & .storage__files {
+
+                & .storage__settings {
+                    & .navigation__menu {
+                        & .item {
+                            height: 20px;
+                            margin-left: 30px;
+                        }
+
+                        & .back__to__folder__button {
+                            width: 50px;
+                            height: 25px;
+                        }
+                }
+                }
+            }
         }
     }
 }
@@ -373,9 +400,15 @@
                 & .storage__settings {
 
                     & .navigation__menu {
-                        & .item {
-                            margin-left: 30px;
-                        }
+                            & .item {
+                                height: 20px;
+                                margin-left: 30px;
+                            }
+    
+                            & .back__to__folder__button {
+                                width: 50px;
+                                height: 25px;
+                            }
                     }
                     & .header {
                         margin-left: 30px;
@@ -393,7 +426,7 @@
             .store__menu {
                 width: 300px;
                 gap: 10px;
-                
+            
 
                 & .div__btn {
                     width: 80px;
@@ -424,6 +457,16 @@
 
                     & .header {
                         display: none;
+                    }
+                    & .navigation__menu {
+                        & .item {
+                            height: 20px;
+                        }
+
+                        & .back__to__folder__button {
+                            width: 50px;
+                            height: 25px;
+                        }
                     }
                 }
                 & .files {
