@@ -3,6 +3,7 @@ import $api from '../../../api';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../../../Images/logo.png';
+import SERVADRESS from "../../servAdress";
 
 function Login() {
     const [userEmail, setUserEmail] = useState();
@@ -19,7 +20,7 @@ function Login() {
             userPassword: userPassword
         }
         if ((userPassword.length >= 6) && (rule.test(userEmail))) {
-            $api.post('https://backend-danila123.amvera.io/auth/registration', user)
+            $api.post('http://localhost:5000/auth/registration', user)
             .then((res) => {
                 localStorage.setItem("token", res.data.token);
                 history("/Profile");

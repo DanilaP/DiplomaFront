@@ -4,7 +4,7 @@ import './profile.scss';
 import $api from '../../api';
 import { useState } from 'react';
 import Modal from './changePasswordModal/modal';
-
+import SERVADRESS from "../servAdress";
 
 
 function Profile() {
@@ -27,7 +27,7 @@ function Profile() {
         let formData = new FormData();
         formData.append('uploadFile', e[0]);
         
-        await $api.post('https://backend-danila123.amvera.io/upload', formData)
+        await $api.post(SERVADRESS + '/upload', formData)
         .then((res) => {
             console.log(res);
             setUser({...user, avatar: res.data.avatar})
@@ -38,7 +38,7 @@ function Profile() {
     }
     const changeSecretCode = () => {
         if (secretCode != "") {
-            $api.post('https://backend-danila123.amvera.io/profile/changeUserSecretCode', {newSecretAccessCode: secretCode})
+            $api.post(SERVADRESS + '/profile/changeUserSecretCode', {newSecretAccessCode: secretCode})
             .then((res) => {
                 console.log(res);
             })
@@ -49,7 +49,7 @@ function Profile() {
         else return;
     }
     useEffect(() => {
-        $api.get('https://backend-danila123.amvera.io/auth/getUserData')
+        $api.get(SERVADRESS + '/auth/getUserData')
         .then((res) => {
             console.log(res.data.userData);
             setUser(res.data.userData);
@@ -80,7 +80,7 @@ function Profile() {
                         <button onClick={changeSecretCode}>Send</button>
                     </div>
                     <div className="link__to__show__store">
-                        <p>{"http://localhost:3000/SecretAccessForm/"+user.id}</p>
+                        <p>{"https://backend-danila123.amvera.io/SecretAccessForm/"+user.id}</p>
                     </div>
                     <div className="settings">
                         <button onClick={changePassword}>Сменить пароль</button>

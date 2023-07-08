@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './modal.scss';
 import $api from '../../../api';
-
+import SERVADRESS from "../../servAdress";
 
 
 function Modal({show}) {
@@ -11,7 +11,7 @@ function Modal({show}) {
         show();
     }
     const changePassword = async () => {
-        await $api.post('http://localhost:5000/profile/changeUserPassword', {newPassword: newPassword})
+        await $api.post(SERVADRESS + '/profile/changeUserPassword', {newPassword: newPassword})
         .then((res) => {
             console.log(res.data);
             close();

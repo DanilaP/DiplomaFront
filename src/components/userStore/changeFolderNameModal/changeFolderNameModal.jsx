@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import $api from '../../../api';
 import './changeFolderNameModal.scss';
-
+import SERVADRESS from "../../servAdress";
 
 
 
@@ -11,7 +11,7 @@ function ChangeFolderNameModal({changeFolders, hide, folderId}) {
     const [newFolderName, setNewFolderName] = useState("");
 
     const changeFolderName = async () => {
-        await $api.post('https://backend-danila123.amvera.io/files/changeFolderName', {folderName: newFolderName, folderIndex: folderId})
+        await $api.post('http://localhost:5000/files/changeFolderName', {folderName: newFolderName, folderIndex: folderId})
         .then((res) => {
             console.log(res);
             changeFolders(res.data.folders);

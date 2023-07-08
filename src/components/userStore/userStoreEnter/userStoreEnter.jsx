@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import './userStoreEnter.scss';
 import $api from '../../../api';
 import StoreForShowing from '../../StoreForShowing/storeForShowing';
-
+import SERVADRESS from "../../servAdress";
 
 function UserStoreEnter() {
     const history = useNavigate();
@@ -13,7 +13,7 @@ function UserStoreEnter() {
     const [userFiles, setUserFiles] = useState([]);
 
     const sendCode = () => {
-        $api.post('https://backend-danila123.amvera.io/profile/getUserDataById', {id: params.id, secretAccessCode: enteredCode})
+        $api.post('http://localhost:5000/profile/getUserDataById', {id: params.id, secretAccessCode: enteredCode})
         .then((res) => {
             setShowStore(true);
             setUserFiles(res.data.userData.files)

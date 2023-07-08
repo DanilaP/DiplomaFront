@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { Bar, Pie } from 'react-chartjs-2';
 import {Chart as Chart} from 'chart.js/auto';
 import { useNavigate } from 'react-router-dom';
+import SERVADRESS from "../servAdress";
 
 function Statistic() {
     const [userData, setUserData] = useState();
@@ -53,7 +54,7 @@ function Statistic() {
     const canvas = useRef();
     
     useEffect(() => {
-        $api.get('https://backend-danila123.amvera.io/auth/getUserData')
+        $api.get('http://localhost:5000/auth/getUserData')
             .then((res) => {
                 setUserData(res.data.userData);
                 let countOfFiles = countOfFilesByType;

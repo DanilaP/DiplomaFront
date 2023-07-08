@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import $api from '../../../api';
 import './changeFileNameModal.scss';
-
+import SERVADRESS from "../../servAdress";
 
 
 
@@ -11,7 +11,7 @@ function ChangeFileNameModal({hide, previosname, updateFiles}) {
     const [newFileName, setNewFileName] = useState();
 
     const changeFileName = async () => {
-        $api.post('https://backend-danila123.amvera.io/files/changeFileName', {fileName: previosname, newName: newFileName})
+        $api.post('http://localhost:5000/files/changeFileName', {fileName: previosname, newName: newFileName})
         .then((res) => {
             console.log(res);
             updateFiles(res.data.files);
