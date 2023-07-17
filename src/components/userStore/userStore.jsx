@@ -31,7 +31,7 @@ function UserStore() {
     const [videoShown, setVideoShown] = useState();
     const [choosenFilePath, setChoosenFilePath] = useState();
     const [findedFileName, setFindedFileName] = useState();
-
+    
     const userObjectFiles = useSelector(store => store.userFiles);
 
     const [choosenFolderId, setChoosenFolderId] = useState(0);
@@ -104,7 +104,7 @@ function UserStore() {
     }
     const calculateAllFileSize = (arrOfFiles) => {
         let sum = 0;
-        sortedFiles?.map((e) => {
+        arrOfFiles.map((e) => {
             sum += Number(e.size);
         })
         sum = sum.toFixed(2);
@@ -180,9 +180,6 @@ function UserStore() {
         })
     }
     useEffect(() => {
-        calculateAllFileSize(user?.files);
-    }, [user])
-    useEffect(() => {
         setUser({...user, files: userObjectFiles});
         setSortedFiles(userObjectFiles);
         sortFiles(parametrOfSort);
@@ -197,7 +194,17 @@ function UserStore() {
         .catch((error) => {
             console.log(error);
         })
+        $api.get(SERVADRESS + '/auth/getUserData')
+        .then((res) => {
+            calculateAllFileSize(res.data.userData.files);
+        })
+        .catch((error) => {
+            console.log(error);
+        })
     }, [])
+    useEffect(() => {
+        console.log("render!")
+    })
     return (
         <div className="UserStore">
             { sliderShown ? <ImageSlider image = {choosenFilePath} openSlider = {openSlider} /> : null  }

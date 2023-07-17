@@ -16,6 +16,7 @@ function reducer(state = stateInitial, action) {
         case "UPLOADEDFILE": return {...state, file: action.payload}
         case "DELETEDFILEPATH": return {...state, filePath: action.payload}
         case "USER_CODE": return {...state, userCode: action.payload}
+        case "CHANGE_THEME": return {...state, theme: action.payload}
         default: return state;
     }
 }

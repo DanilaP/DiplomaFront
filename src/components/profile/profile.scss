@@ -135,6 +135,8 @@
         }
 
         & .settings {
+            display: flex;
+            align-items: center;
 
             & button {
                 margin-right: 10px;
@@ -147,6 +149,37 @@
                 &:hover {
                     cursor: pointer;
                     border: 0.5px solid white;
+                }
+            }
+
+            & .theme {
+                border-radius: 25px;
+                width: 80px;
+                height: 30px;
+                box-sizing: border-box;
+                padding-left: 5px;
+                transition: 1s;
+
+                & .circle {
+                    border-radius: 50%;
+                    height: 20px;
+                    width: 20px;
+                    background-color: white;
+                    
+                }
+
+                &:hover {
+                    cursor: pointer;
+                    border: none;
+                }
+
+                &:focus {
+                    padding-left: 55px;
+                    background-color: white;
+
+                    & .circle {
+                        background-color: black;
+                    }
                 }
             }
         }

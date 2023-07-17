@@ -5,6 +5,7 @@ import $api from '../../api';
 import { useState } from 'react';
 import Modal from './changePasswordModal/modal';
 import SERVADRESS from "../servAdress";
+import { useSelector } from 'react-redux';
 
 
 function Profile() {
@@ -12,6 +13,7 @@ function Profile() {
     const [user, setUser] = useState({});
     const [showModal, setShowModal] = useState(false);
     const [secretCode, setSecretCode] = useState("");
+    const theme = useSelector(store => store.theme);
 
     const goBack = () => {
         history('/Store');
@@ -48,6 +50,9 @@ function Profile() {
         }
         else return;
     }
+    const changeTheme = () => {
+        
+    }
     useEffect(() => {
         $api.get(SERVADRESS + '/auth/getUserData')
         .then((res) => {
@@ -80,12 +85,15 @@ function Profile() {
                         <button onClick={changeSecretCode}>Send</button>
                     </div>
                     <div className="link__to__show__store">
-                        <p>{"https://backend-danila123.amvera.io/SecretAccessForm/"+user.id}</p>
+                        <p>{"http://localhost:3000/SecretAccessForm/"+user.id}</p>
                     </div>
                     <div className="settings">
                         <button onClick={changePassword}>Сменить пароль</button>
                         <button onClick={logout}>Выйти</button>
                         <button onClick={() => history("/Store/" + user.id)}>Перейти в хранилище</button>
+                        <button className='theme'>
+                            <div onClick={changeTheme} className='circle'></div>
+                        </button>
                     </div>
                 </div>
             </div>
