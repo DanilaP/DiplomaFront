@@ -85,7 +85,7 @@ function Profile() {
                         <button onClick={changeSecretCode}>Send</button>
                     </div>
                     <div className="link__to__show__store">
-                        <p>{"http://localhost:3000/SecretAccessForm/"+user.id}</p>
+                        <p>{"https://backend-danila123.amvera.io/SecretAccessForm/"+user.id}</p>
                     </div>
                     <div className="settings">
                         <button onClick={changePassword}>Сменить пароль</button>
