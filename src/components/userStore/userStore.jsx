@@ -194,6 +194,11 @@ function UserStore() {
         .catch((error) => {
             console.log(error);
         })
+    }, [])
+    useEffect(() => {
+        console.log("render!")
+    })
+    useEffect(() => {
         $api.get(SERVADRESS + '/auth/getUserData')
         .then((res) => {
             calculateAllFileSize(res.data.userData.files);
@@ -201,9 +206,6 @@ function UserStore() {
         .catch((error) => {
             console.log(error);
         })
-    }, [])
-    useEffect(() => {
-        console.log("render!")
     })
     return (
         <div className="UserStore">
