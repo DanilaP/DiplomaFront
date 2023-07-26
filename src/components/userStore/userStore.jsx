@@ -45,7 +45,7 @@ function UserStore() {
         formData.append('uploadFile', file[0]);
         formData.append('folderId', choosenFolderId);
         //store.dispatch({type: "UPLOADEDFILE", payload: formData});
-        await $api.post('http://localhost:5000/uploadFiles', formData)
+        await $api.post(SERVADRESS + '/uploadFiles', formData)
         .then((res) => {
             let files = res.data.files.filter(el => el.folderId === choosenFolderId);
             setUser({...user, files: files});
@@ -94,7 +94,7 @@ function UserStore() {
     }
     const deleteFile = async (filePath) => {
         //store.dispatch({type: "DELETEDFILEPATH", payload: filePath})
-        await $api.post('http://localhost:5000/files/deleteFile', {deletedFilePath: filePath})
+        await $api.post(SERVADRESS + '/files/deleteFile', {deletedFilePath: filePath})
         .then((res) => {
             setSortedFiles(res.data.files.filter(el => el.folderId === choosenFolderId));
         })
@@ -133,7 +133,7 @@ function UserStore() {
         setUser({...user, folders: folders});
     }
     const deleteFolder = async (folderId) => {
-        await $api.post('http://localhost:5000/files/deleteFolder', {folderId: folderId, parentFolderId: choosenFolderId})
+        await $api.post(SERVADRESS + '/files/deleteFolder', {folderId: folderId, parentFolderId: choosenFolderId})
         .then((res) => {
             setUser({...user, folders: res.data.folders});
             console.log(res.data);
@@ -143,7 +143,7 @@ function UserStore() {
         })
     }
     const getFilesFromFolders = async (folderId) => {
-        await $api.post('http://localhost:5000/getFilesFromFolder', {folderId: folderId})
+        await $api.post(SERVADRESS + '/getFilesFromFolder', {folderId: folderId})
         .then((res) => {
             setUser({...user, folders: res.data.folders, files: res.data.files});
             setSortedFiles(res.data.files);
@@ -163,7 +163,7 @@ function UserStore() {
         }
         else lastFolder = historyOfFolders[0];
 
-        await $api.post('http://localhost:5000/getFilesFromFolder', {folderId: lastFolder})
+        await $api.post(SERVADRESS + '/getFilesFromFolder', {folderId: lastFolder})
         .then((res) => {
             setUser({...user, folders: res.data.folders, files: res.data.files});
             setSortedFiles(res.data.files);
@@ -185,7 +185,7 @@ function UserStore() {
         sortFiles(parametrOfSort);
     }, [userObjectFiles])
     useEffect(() => {
-        $api.post('http://localhost:5000/getFilesFromFolder', {folderId: choosenFolderId})
+        $api.post(SERVADRESS + '/getFilesFromFolder', {folderId: choosenFolderId})
         .then((res) => {
             setUser({...user, folders: res.data.folders, files: res.data.files});
             setSortedFiles(res.data.files);

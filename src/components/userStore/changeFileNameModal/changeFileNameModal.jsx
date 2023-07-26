@@ -11,7 +11,7 @@ function ChangeFileNameModal({hide, previosname, updateFiles}) {
     const [newFileName, setNewFileName] = useState();
 
     const changeFileName = async () => {
-        $api.post('http://localhost:5000/files/changeFileName', {fileName: previosname, newName: newFileName})
+        $api.post(SERVADRESS + '/files/changeFileName', {fileName: previosname, newName: newFileName})
         .then((res) => {
             console.log(res);
             updateFiles(res.data.files);

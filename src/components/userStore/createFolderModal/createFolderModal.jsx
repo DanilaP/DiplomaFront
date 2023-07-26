@@ -9,7 +9,7 @@ function CreatedFolderModal({hide, choosenFolderId, updateUserFolders}) {
     const [folderName, setFolderName] = useState("");
 
     const createFolder = async () => {
-        await $api.post('http://localhost:5000/createFolder', {folderName: folderName, parentFolderId: choosenFolderId})
+        await $api.post(SERVADRESS + '/createFolder', {folderName: folderName, parentFolderId: choosenFolderId})
         .then((res) => {
             updateUserFolders(res.data.folders);
             hide();
