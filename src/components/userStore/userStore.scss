@@ -140,20 +140,7 @@
                 margin-top: 50px;
                 gap: 10px;
 
-                &:hover {
-                    border: 1px solid white;
-                    margin-top: 48px;
-
-                    & .delete__button {
-                        opacity: 1;
-                        position: relative;
-                        margin-top: 30px;
-                        margin-left: 120px;
-                    }
-                    & img {
-                        margin-top: -43.5px;
-                    }
-                }
+                
                 & .delete__button {
                     font-size: 30px;
                     transform: scaleY(0.8);
@@ -224,6 +211,33 @@
         }
     }
 }
+@media screen and (min-width: 991px) {
+    .UserStore {
+        & .store {
+            & .storage__files {
+                & .files {
+
+                    & .file {
+                        &:hover {
+                            border: 1px solid white;
+                            margin-top: 48px;
+        
+                            & .delete__button {
+                                opacity: 1;
+                                position: relative;
+                                margin-top: 30px;
+                                margin-left: 120px;
+                            }
+                            & img {
+                                margin-top: -43.5px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
 @media screen and (max-width: 990px) {
     .UserStore {
         & .store {
@@ -273,23 +287,6 @@
                     & span {
                         font-size: 13px;
                         text-align: center;
-                    }
-
-                    &:hover {
-                        margin-top: 0;
-                        border: none;
-                        
-                        & .delete__button {
-                            opacity: 1;
-                            position: relative;
-                            margin-top: 0px;
-                            margin-left: 80px;
-                        }
-                        & img {
-                            margin-top: -35px;
-                            width: 100px;
-                            height: 100px;
-                        }
                     }
                 }
             }

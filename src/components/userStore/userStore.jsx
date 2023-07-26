@@ -322,7 +322,6 @@ function UserStore() {
                     <div className="storage__settings">
                         <div className="navigation__menu">
                             <div onClick={() => history("/Profile")} className='item'>Мой профиль</div>
-                            <div onClick={() => history("/Statistic")} className='item'>Статистика</div>
                             <button onClick={backToFolder} className="back__to__folder__button">Назад</button>
                             <div onClick={createFolder} className="item">Создать папку</div>
                          </div>

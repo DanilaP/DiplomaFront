@@ -2,10 +2,12 @@
     position: absolute;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(20px);
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 1;
 
     & .image__box {
         width: 1300px;
@@ -33,6 +35,83 @@
             max-width: 1200px;
             max-height: 600px;
             pointer-events: none;
+        }
+    }
+}
+
+@media screen and (max-width: 1340px) {
+    .ImageSlider {
+        & .image__box {
+            width: 1000px;
+
+            & .close__button {
+                margin-left: 900px;
+                margin-top: -600px;
+            }
+        }
+    }
+}
+@media screen and (max-width: 1040px) {
+    .ImageSlider {
+        & .image__box {
+            width: 800px;
+            height: 600px;
+
+            & img {
+                width: 600px;
+                height: 400px;
+            }
+            & .close__button {
+                margin-left: 700px;
+                margin-top: -500px;
+            }
+        }
+    }
+}
+@media screen and (max-width: 1040px) {
+    .ImageSlider {
+        & .image__box {
+            width: 600px;
+            height: 400px;
+
+            & img {
+                width: 400px;
+                height: 200px;
+            }
+            & .close__button {
+                margin-left: 500px;
+                margin-top: -300px;
+            }
+        }
+    }
+}
+@media screen and (max-width: 625px) {
+    .ImageSlider {
+        & .image__box {
+            width: 500px;
+            height: 400px;
+
+            & .close__button {
+                margin-left: 400px;
+                margin-top: -300px;
+            }
+        }
+    }
+}
+@media screen and (max-width: 530px) {
+    .ImageSlider {
+        & .image__box {
+            width: 350px;
+            height: 200px;
+
+            & img {
+                width: 300px;
+                height: 150px;
+            }
+            & .close__button {
+                margin-left: 320px;
+                margin-top: -180px;
+            }
         }
     }
 }
