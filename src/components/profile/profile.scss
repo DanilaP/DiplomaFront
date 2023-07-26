@@ -190,7 +190,9 @@
     .Profile {
         & .main__content {
             width: 600px;
-
+            & p {
+                text-align: center;
+            }
             & .settings {   
                 & button {
                     width: 150px;
@@ -231,6 +233,9 @@
             width: 100vw;
             height: 100vh;
 
+            & p {
+                width: 300px;
+            }
             & .user__info {
                 width: 250px;
             }

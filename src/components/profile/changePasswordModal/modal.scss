@@ -62,3 +62,22 @@
         }
     }
 }
+
+@media screen and (max-width: 430px) {
+    .Modal {
+        & .content {
+            width: 300px;
+
+            & .close__button {
+                margin-left: 270px;
+            }
+            & input {
+                width: 200px;
+            }
+
+            & button {
+                width: 150px;
+            }
+        }
+    }
+}

@@ -256,14 +256,16 @@
                 & .file {
                     width: 100px;
                     height: 100px;
+                    display: flex;
 
                     & .delete__button {
                         opacity: 1;
                         position: relative;
-                        margin-top: 30px;
-                        margin-left: 120px;
+                        margin-top: 0px;
+                        margin-left: 80px;
                     }
                     & img {
+                        margin-top: -35px;
                         width: 100px;
                         height: 100px;
                     }
@@ -396,6 +398,10 @@
                 width: 400px;
             }
             & .storage__files {
+                
+                & .files {
+                    overflow-x: hidden;
+                }
 
                 & .storage__settings {
 

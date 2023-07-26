@@ -7,10 +7,10 @@ function ErrorBox({text, showModal}) {
   
     return (
         <div className="ErrorBox">
-            <text className='error__text'>
-                <closebutton onClick = {showModal}>x</closebutton>
+            <div className='error__text'>
+                <div className='closebutton' onClick = {showModal}>x</div>
                 {text}
-            </text>
+            </div>
         </div>
     );
 }

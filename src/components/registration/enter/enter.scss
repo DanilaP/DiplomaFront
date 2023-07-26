@@ -13,11 +13,10 @@
         justify-content: center;
         flex-direction: column;
         gap: 10px;
-        padding-top: 30px;
         width: 500px;
 
 
-        & div {
+        & .text {
             color: white;
             font-size: 20px;
         }
@@ -72,6 +71,16 @@
             &:hover {
                 cursor: pointer;
                 text-decoration: underline;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 370px) {
+    .Enter {
+        & .content {
+            & input {
+                width: 250px;
             }
         }
     }

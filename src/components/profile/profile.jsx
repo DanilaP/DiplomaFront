@@ -91,9 +91,6 @@ function Profile() {
                         <button onClick={changePassword}>Сменить пароль</button>
                         <button onClick={logout}>Выйти</button>
                         <button onClick={() => history("/Store/" + user.id)}>Перейти в хранилище</button>
-                        <button className='theme'>
-                            <div onClick={changeTheme} className='circle'></div>
-                        </button>
                     </div>
                 </div>
             </div>

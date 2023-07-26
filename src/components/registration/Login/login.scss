@@ -79,3 +79,13 @@
         }
     }
 }
+
+@media screen and (max-width: 370px) {
+    .Login {
+        & .login__form {
+            & input {
+                width: 250px;
+            }
+        }
+    }
+}

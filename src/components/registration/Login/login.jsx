@@ -3,11 +3,13 @@ import $api from '../../../api';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../../../Images/logo.png';
+import ErrorBox from '../errorBox/errorBox';
 import SERVADRESS from "../../servAdress";
 
 function Login() {
     const [userEmail, setUserEmail] = useState();
     const [userPassword, setUserPassword] = useState();
+    const [isError, setIsError] = useState(false);
     const history = useNavigate();
 
     const goToEnter = () => {
@@ -31,19 +33,21 @@ function Login() {
             })
         }
         else {
+            setIsError(true);
             return;
         }
     }
   return (
     <div className="Login">
         <div className="login__form">
+        { isError ? <ErrorBox showModal = {() => setIsError(false)} text={"Проверьте длину пароля (не менее 6) и правильность введенного вами email"} /> : null }
             <div className="content">
                 <img src = {logo} width = {"50px"} height = {"50px"} />
                 <div>Регистрация</div>
                 <input onChange={(e) => setUserEmail(e.target.value)} type = "text" placeholder='Введите логин' />
                 <input onChange={(e) => setUserPassword(e.target.value)} type = "password" placeholder='Введите пароль' />
                 <p onClick={goToEnter}>Войти</p>
-                <button onClick={registration}>LOG IN</button>
+                <button onClick={registration}>Регистрация</button>
             </div>
         </div>
     </div>

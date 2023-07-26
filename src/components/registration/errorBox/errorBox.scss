@@ -6,7 +6,8 @@
     align-items: center;
     justify-content: center;
     background-color: rgba(0, 0, 0, 0.5);
-    
+    z-index: 1;
+
     & .error__text {
         display: flex;
         color: crimson;
@@ -19,7 +20,7 @@
         border: 1px solid grey;
         padding: 10px;
 
-        & closebutton {
+        & .closebutton {
             position: absolute;
             margin-left: 380px;
             margin-top: -180px;
@@ -30,6 +31,21 @@
             &:hover {
                 cursor: pointer;
                 color: aqua;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .ErrorBox {
+        & .error__text {
+            width: 300px;
+            height: 150px;
+            font-size: 15px;
+
+            & .closebutton {
+                margin-left: 280px;
+                margin-top: -130px;
             }
         }
     }
