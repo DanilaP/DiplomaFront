@@ -276,7 +276,20 @@
                     }
 
                     &:hover {
+                        margin-top: 0;
+                        border: none;
                         
+                        & .delete__button {
+                            opacity: 1;
+                            position: relative;
+                            margin-top: 0px;
+                            margin-left: 80px;
+                        }
+                        & img {
+                            margin-top: -35px;
+                            width: 100px;
+                            height: 100px;
+                        }
                     }
                 }
             }
