@@ -44,17 +44,23 @@ function UserStore() {
         let formData = new FormData();
         formData.append('uploadFile', file[0]);
         formData.append('folderId', choosenFolderId);
-        //store.dispatch({type: "UPLOADEDFILE", payload: formData});
-        await $api.post(SERVADRESS + '/uploadFiles', formData)
-        .then((res) => {
-            let files = res.data.files.filter(el => el.folderId === choosenFolderId);
-            setUser({...user, files: files});
-            setSortedFiles(files);
-            console.log(res);
-        })
-        .catch((err) => {
-            console.log(err);
-        })
+        
+        if ((Number(sizeOfUserFiles) + Number((file[0].size/1024/1024).toFixed(2))) > 32) {
+            alert("Недостаточно места в хранилище!");
+            return;
+        }
+        else {
+            await $api.post(SERVADRESS + '/uploadFiles', formData)
+            .then((res) => {
+                let files = res.data.files.filter(el => el.folderId === choosenFolderId);
+                setUser({...user, files: files});
+                setSortedFiles(files);
+                console.log(res);
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+        }
     }
     const sortFiles = (param) => {
         setParametrOfSort(param);
@@ -120,7 +126,7 @@ function UserStore() {
     }
     const findFileByName = (e) => {
         if(e.keyCode == 13){
-            setSortedFiles(sortedFiles.filter(e => e.fileName == findedFileName));
+            setSortedFiles(sortedFiles.filter(e => e.fileName.toLowerCase().includes(findedFileName.toLowerCase())));
         }
         else {
             setSortedFiles(user.files);
@@ -206,7 +212,7 @@ function UserStore() {
         .catch((error) => {
             console.log(error);
         })
-    })
+    }, [])
     return (
         <div className="UserStore">
             { sliderShown ? <ImageSlider image = {choosenFilePath} openSlider = {openSlider} /> : null  }

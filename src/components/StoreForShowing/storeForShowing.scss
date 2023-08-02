@@ -42,3 +42,38 @@
         }
     }
 }
+
+@media screen and (max-width: 880px) {
+    .StoreForShowing {
+        & .store {
+            width: 500px;
+
+            & .file {
+                width: 100px;
+                height: 100px;
+
+                & img {
+                    width: 100px;
+                    height: 100px;
+                }
+            }
+        }
+    }
+}
+@media screen and (max-width: 520px) {
+    .StoreForShowing {
+        & .store {
+            width: 350px;
+
+            & .file {
+                width: 100px;
+                height: 100px;
+
+                & img {
+                    width: 100px;
+                    height: 100px;
+                }
+            }
+        }
+    }
+}
