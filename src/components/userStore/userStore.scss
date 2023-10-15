@@ -12,6 +12,16 @@
         margin: 0 auto;
         width: 50px;
         height: 50px;
+        background-color: rgba(0, 0, 0, 0.592);
+        border: 1px solid white;
+        color: white;
+        border-radius: 50%;
+
+        &:hover {
+            cursor: pointer;
+            color: aqua;
+            border-color: aqua;
+        }
     }
     & .navigation__menu {
         color: white;
@@ -23,12 +33,18 @@
         gap: 10px;
 
         & .item {
+            width: 100px;
+            height: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             border: 1px solid grey;
             padding: 20px;
+            font-size: 13px;
 
+            & img {
+                margin-left: 10px;
+            }
             &:hover {
                 cursor: pointer;
                 color: white;
@@ -38,7 +54,7 @@
         }
     }
     & .store {
-        width: 1080px;
+        width: 1180px;
         padding: 40px;
         height: 600px;
         background-color: rgba(0, 0, 0, 0.6);
@@ -75,15 +91,17 @@
                 }
             }
             & .div__btn {
-                width: 200px;
+                width: 120px;
                 height: 30px;
-                border: 1px solid white;
+                font-size: 13px;
+                text-align: center;
+                border: 1px solid black;
                 padding: 5px;
-                background-color: rgba(255, 255, 255, 0);;
+                background-color: rgba(0, 0, 0, 0.5);;
                 
                 &:hover {
                     border: 1px solid aqua;
-                    background-color: rgba(255, 255, 255, 0);
+                    background-color: rgba(0, 0, 0, 0.5);
                     color: aqua;
                 }
             }

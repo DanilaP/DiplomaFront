@@ -5,6 +5,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    backdrop-filter: blur(10px);
 
     & .secret__code__enter__form {
         display: flex;

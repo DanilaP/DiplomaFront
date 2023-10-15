@@ -16,6 +16,7 @@ import UserStore from './components/userStore/userStore';
 import Statistic from './components/Statistic/statistic';
 import UserStoreEnter from './components/userStore/userStoreEnter/userStoreEnter';
 
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>

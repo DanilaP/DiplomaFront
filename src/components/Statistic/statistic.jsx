@@ -28,51 +28,84 @@ function Statistic() {
             type: "Текстовые файлы/таблицы",
             count: 0,
         },
+        {
+            type: "Архивы",
+            count: 0,
+        },
     ]);
 
-    const labels = ["Изображения", "Аудио-файлы", "Видео-файлы", "Текстовые файлы/таблицы"];
-    const data = {
-    labels: labels,
-    datasets: [{
-        label: 'Статистика загруженных файлов',
-        data: [...countOfFilesByType.map((el) => el.count)],
-        backgroundColor: [
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(255, 159, 64, 0.2)',
-        'rgba(255, 205, 86, 0.2)',
-        'rgba(75, 192, 192, 0.2)',
-        ],
-        borderColor: [
-        'rgb(255, 99, 132)',
-        'rgb(255, 159, 64)',
-        'rgb(255, 205, 86)',
-        'rgb(75, 192, 192)',
-        ],
-        borderWidth: 1
-    }]
-    };
-    const canvas = useRef();
-    
+    let labels = ["Изображения", "Аудио-файлы", "Видео-файлы", "Текстовые файлы/таблицы", "Архивы"];
+    let data = {
+        labels: labels,
+        datasets: [{
+            label: 'Статистика загруженных файлов',
+            data: [...countOfFilesByType.map((el) => el.count)],
+            backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(255, 205, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(110, 132, 132, 0.2)',
+            ],
+            borderColor: [
+            'rgb(255, 99, 132)',
+            'rgb(255, 159, 64)',
+            'rgb(255, 205, 86)',
+            'rgb(75, 192, 192)',
+            'rgb(110, 132, 132)',
+            ],
+            borderWidth: 1
+        }]
+    }
+    const changeGraphicsInfo = (choosenInfo) => {
+        let newInfo = countOfFilesByType;
+            newInfo.map(el => {
+                el.count = 0;
+            })
+        if (choosenInfo === "first") {
+            setChoosenGraphic(false);
+            userData.files.map((el) => {
+                if (el.type.indexOf("image") > -1) {
+                    newInfo[0].count = newInfo[0].count + 1;
+                } else if (el.type.indexOf("audio") > -1) {
+                    newInfo[1].count = newInfo[1].count + 1;
+                } else if (el.type.indexOf("video") > -1) {
+                    newInfo[2].count = newInfo[2].count + 1;
+                } else if (el.type.indexOf("zip") > -1) {
+                    newInfo[4].count = newInfo[4].count + 1;
+                } else {
+                    newInfo[3].count = newInfo[3].count + 1;
+                }
+            })
+            setCountOfFilesByType(newInfo);
+        }
+        else {
+            setChoosenGraphic(true);
+            userData.files.map((file) => {
+                if (file.type.indexOf("image") > -1) {
+                    newInfo[0].count = newInfo[0].count + Number(file.size);
+                } else if (file.type.indexOf("audio") > -1) {
+                    newInfo[1].count = newInfo[1].count + Number(file.size);
+                } else if (file.type.indexOf("video") > -1) {
+                    newInfo[2].count = newInfo[2].count + Number(file.size);
+                } else if (file.type.indexOf("zip") > -1) {
+                    newInfo[4].count = newInfo[4].count + Number(file.size);
+                } else {
+                    newInfo[3].count = newInfo[3].count + Number(file.size);
+                } 
+            })
+            setCountOfFilesByType(newInfo);
+        }
+    }
     useEffect(() => {
-        $api.get('http://localhost:5000/auth/getUserData')
+        $api.get(SERVADRESS + '/auth/getUserData')
             .then((res) => {
                 setUserData(res.data.userData);
-                let countOfFiles = countOfFilesByType;
-                res.data.userData.files.map((el) => {
-                    if (el.type.indexOf("image") > -1) {
-                        countOfFiles[0].count = countOfFiles[0].count + 1;
-                    } else if (el.type.indexOf("audio") > -1) {
-                        countOfFiles[1].count = countOfFiles[1].count + 1;
-                    } else if (el.type.indexOf("video") > -1) {
-                        countOfFiles[2].count = countOfFiles[2].count + 1;
-                    } else if (el.type.indexOf("application") > -1) {
-                        countOfFiles[3].count = countOfFiles[3].count + 1;
-                    }
-                })
+                console.log(res.data.userData);
             })
             .catch((error) => {
                 console.log(error);
-        })
+            })
     }, [])
     return (
       <div className="Statistic">
@@ -81,14 +114,14 @@ function Statistic() {
                     x
                 </div>
                 <div className="select__graphic">
-                    <select onChange={() => choosenGraphic ? setChoosenGraphic(false) : setChoosenGraphic(true)}  name="choice">
-                        <option value="first">Столбчатая диаграмма</option>
-                        <option value="second">Круговая диаграмма</option>
+                    <select onChange={(e) => changeGraphicsInfo(e.target.value)}  name="choice">
+                        <option value="first">Количество файлов</option>
+                        <option value="second">Занимаемая память</option>
                     </select>
                 </div>
                 <div className="graphics">
                     {
-                        choosenGraphic ? <Pie data = {data} /> : <Bar data = {data} />
+                        choosenGraphic ? <Bar data = {data} /> : <Bar data = {data} />
                     }
                 </div>
             </div>

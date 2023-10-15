@@ -13,11 +13,12 @@ import wordicon from '../../Images/word.png';
 import audioIcon from '../../Images/audioIcon.png';
 import ImageSlider from './imageSlider/imageSlider';
 import VideoPlayer from './videoPlayer/videoPlayer';
-import store from '../../store';
 import { useSelector } from 'react-redux';
 import ChangeFolderNameModal from './changeFolderNameModal/changeFolderNameModal';
 import CreatedFolderModal from './createFolderModal/createFolderModal';
 import SERVADRESS from "../servAdress";
+import VideoCreator from './videoCreator/videoCreator';
+import zipImage from '../../Images/allFilesIcon.png';
 
 function UserStore() {
     const history = useNavigate();
@@ -40,12 +41,14 @@ function UserStore() {
     const [historyOfLastFolder, setHistoryOfLastFolder] = useState();
     const [isCreateFolder, setIsCreateFolder] = useState(false);
 
+    const [isVideoCreatingStart, setIsVideoCreatingStart] = useState(false);
+
     const uploadFile = async (file) => {
         let formData = new FormData();
         formData.append('uploadFile', file[0]);
         formData.append('folderId', choosenFolderId);
         
-        if ((Number(sizeOfUserFiles) + Number((file[0].size/1024/1024).toFixed(2))) > 32) {
+        if ((Number(sizeOfUserFiles) + Number((file[0].size/1024/1024).toFixed(2))) > 8192) {
             alert("Недостаточно места в хранилище!");
             return;
         }
@@ -55,6 +58,7 @@ function UserStore() {
                 let files = res.data.files.filter(el => el.folderId === choosenFolderId);
                 setUser({...user, files: files});
                 setSortedFiles(files);
+                calculateAllFileSize(files);
                 console.log(res);
             })
             .catch((err) => {
@@ -185,6 +189,9 @@ function UserStore() {
             console.log(error);
         })
     }
+    const createVideoFile = () => {
+        isVideoCreatingStart ? setIsVideoCreatingStart(false) : setIsVideoCreatingStart(true);
+    }
     useEffect(() => {
         setUser({...user, files: userObjectFiles});
         setSortedFiles(userObjectFiles);
@@ -202,9 +209,6 @@ function UserStore() {
         })
     }, [])
     useEffect(() => {
-        console.log("render!")
-    })
-    useEffect(() => {
         $api.get(SERVADRESS + '/auth/getUserData')
         .then((res) => {
             calculateAllFileSize(res.data.userData.files);
@@ -215,6 +219,7 @@ function UserStore() {
     }, [])
     return (
         <div className="UserStore">
+            { isVideoCreatingStart ? <VideoCreator closeModal={createVideoFile} /> : null }
             { sliderShown ? <ImageSlider image = {choosenFilePath} openSlider = {openSlider} /> : null  }
             { videoShown ? <VideoPlayer image = {choosenFilePath} openVideo = {openVideo} /> : null  }
             { isChangeFileName ? <ChangeFileNameModal updateFiles = {updateFiles} previosname = {previosname} hide = {changeFileName} /> : null }
@@ -222,6 +227,7 @@ function UserStore() {
             { isCreateFolder ? <CreatedFolderModal updateUserFolders = {updateUserFolders} choosenFolderId = {choosenFolderId} hide = {createFolder} /> : null }
             <div className="store">
                 <div className="store__menu">
+                    <button onClick={backToFolder} className="back__to__folder__button">Назад</button>
                     <div onClick={() => sortFiles("all")} className='div__btn'>Все файлы</div>
                     <div onClick={() => sortFiles("text")} className='div__btn'>Текстовые файлы</div>
                     <div onClick={() => sortFiles("video")} className='div__btn'>Видео файлы</div>
@@ -229,7 +235,7 @@ function UserStore() {
                     <input onKeyDown={findFileByName} onChange={(e) => setFindedFileName(e.target.value)} type = "text" placeholder='Поиск файла'/>
 
                     <div className='upload__main'>
-                        <input accept="image/*,video/*,.doc,.pdf,.xls, audio/*" onChange={(e) => uploadFile(e.target.files)} type = "file"></input>
+                        <input accept="image/*,video/*,.doc,.pdf,.xls, audio/*, .zip,.rar,.7zip" onChange={(e) => uploadFile(e.target.files)} type = "file"></input>
                         <div className='upload__file'>Загрузить файл</div>
                     </div>
                 </div>
@@ -310,6 +316,19 @@ function UserStore() {
                                     </div>
                                 )
                             }
+                            else if (e.type.indexOf('zip') > -1) {
+                                return (
+                                    <div key={id} className="file">
+                                        <div onClick={() => deleteFile(e.path)} className="delete__button">x</div>
+                                            <a href={e.path}>
+                                                <div>
+                                                    <img width={"150px"} height={"150px"} src = {zipImage}/>
+                                                </div>
+                                            </a>
+                                        <span onClick={() => changeFileName(e.fileName)}>{e.fileName}</span>
+                                    </div>
+                                )
+                            }
                         })}
                         {user?.folders?.map((e, id) => {
                             return (
@@ -328,7 +347,7 @@ function UserStore() {
                     <div className="storage__settings">
                         <div className="navigation__menu">
                             <div onClick={() => history("/Profile")} className='item'>Мой профиль</div>
-                            <button onClick={backToFolder} className="back__to__folder__button">Назад</button>
+                            <div onClick={() => history("/Statistic")} className='item'>Cтатистика</div>
                             <div onClick={createFolder} className="item">Создать папку</div>
                          </div>
                         <div className="header">Вместимость хранилища</div>

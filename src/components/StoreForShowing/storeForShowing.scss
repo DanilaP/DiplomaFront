@@ -17,7 +17,8 @@
         height: 600px;
         border: 1px solid grey;
         padding: 20px;
-        
+        overflow-y: scroll;
+
         & .file {
             display: flex;
             flex-direction: column;
@@ -25,19 +26,11 @@
             justify-content: center;
             width: 150px;
             height: 150px;
-            box-sizing: border-box;
+            margin: 20px;
 
             & img {
-                width: 150px;
-                height: 150px;
-            }
-            & span {
-                position: absolute;
-                margin-top: 180px;
-            }
-            &:hover {
-                border: 1px solid white;
-                cursor: pointer;
+                width: 149px;
+                height: 149px;
             }
         }
     }

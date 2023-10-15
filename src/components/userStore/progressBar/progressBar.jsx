@@ -5,7 +5,7 @@ import './progressBar.scss';
 
 
 function ProgressBar({percentageNew}) {
-    const [max, setMax] = useState(32);
+    const [max, setMax] = useState(8192);
 
     return (
         <div className="ProgressBar">

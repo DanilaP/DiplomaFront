@@ -1,0 +1,88 @@
+.video__creator {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(20px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    z-index: 10;
+
+    & .creating__block {
+        width: 900px;
+        height: 600px;
+        border: 1px solid white;
+        color: white;
+        background-color: black;
+        padding: 15px;
+        box-sizing: border-box;
+    }
+
+    & .close__button {
+        position: relative;
+        font-size: 30px;
+        transform: scaleY(0.8);
+        float: right;
+        margin-top: -10px;
+
+        &:hover {
+            color: aqua;
+            cursor: pointer;
+        }
+    }
+
+    & .settings__block {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 5px;
+
+        & .settings__buttons {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid white;
+            padding: 10px;
+            width: 160px;
+            height: 32px;
+
+            &:hover {
+                cursor: pointer;
+                border: 1px solid aqua;
+                color: aqua;
+            }
+        }
+    }
+
+    & .video__translating__block {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 866px;
+        height: 450px;
+        border: 1px solid white;
+        margin-bottom: 5px;
+
+        & video {
+            transform: scale(-1, 1);
+        }
+    }
+    & .upload__button {
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 180px;
+        height: 32px;
+        padding: 5px;
+        border: 1px solid white;
+        
+        &:hover {
+            cursor: pointer;
+            color: chartreuse;
+            border: 1px solid chartreuse;
+        }
+    }
+}
