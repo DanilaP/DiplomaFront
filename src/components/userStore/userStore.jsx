@@ -19,6 +19,9 @@ import CreatedFolderModal from './createFolderModal/createFolderModal';
 import SERVADRESS from "../servAdress";
 import VideoCreator from './videoCreator/videoCreator';
 import zipImage from '../../Images/allFilesIcon.png';
+import FileSettingsModal from './contextMenu/fileSettingsModal';
+import SharingMemoryModal from './sharingMemoryModal/sharingMemoryModal';
+import FolderSettingsModal from './contextMenu/folderSettingsModal';
 
 function UserStore() {
     const history = useNavigate();
@@ -42,6 +45,12 @@ function UserStore() {
     const [isCreateFolder, setIsCreateFolder] = useState(false);
 
     const [isVideoCreatingStart, setIsVideoCreatingStart] = useState(false);
+    ////////
+    const [isFileSettingsActive, setIsFileSettingsActive] = useState(false);
+    const [isFolderSettingsActive, setIsFolderSettingsActive] = useState(false);
+    const [changedFile, setChangedFile] = useState({});
+    ///////
+    const [isShowingMemoryModal, setIsShowingMemoryModal] = useState(false);
 
     const uploadFile = async (file) => {
         let formData = new FormData();
@@ -58,7 +67,6 @@ function UserStore() {
                 let files = res.data.files.filter(el => el.folderId === choosenFolderId);
                 setUser({...user, files: files});
                 setSortedFiles(files);
-                calculateAllFileSize(files);
                 console.log(res);
             })
             .catch((err) => {
@@ -192,6 +200,19 @@ function UserStore() {
     const createVideoFile = () => {
         isVideoCreatingStart ? setIsVideoCreatingStart(false) : setIsVideoCreatingStart(true);
     }
+    ////
+    const showFileSettingsModal = (file) => {
+        setChangedFile(file);
+        isFileSettingsActive ? setIsFileSettingsActive(false) : setIsFileSettingsActive(true);
+    }
+    const showFolderSettingsModal = (file) => {
+        setChangedFile(file);
+        isFolderSettingsActive ? setIsFolderSettingsActive(false) : setIsFolderSettingsActive(true);
+    }
+    ////
+    const showMemoryModal = () => {
+        isShowingMemoryModal ? setIsShowingMemoryModal(false) : setIsShowingMemoryModal(true);
+    }
     useEffect(() => {
         setUser({...user, files: userObjectFiles});
         setSortedFiles(userObjectFiles);
@@ -216,9 +237,12 @@ function UserStore() {
         .catch((error) => {
             console.log(error);
         })
-    }, [])
+    })
     return (
         <div className="UserStore">
+             { isFolderSettingsActive ? <FolderSettingsModal file = {changedFile} close = {showFolderSettingsModal} /> : null }
+            { isShowingMemoryModal ? <SharingMemoryModal close = {showMemoryModal} /> : null }
+            { isFileSettingsActive ? <FileSettingsModal file = {changedFile} close = {showFileSettingsModal} /> : null }
             { isVideoCreatingStart ? <VideoCreator closeModal={createVideoFile} /> : null }
             { sliderShown ? <ImageSlider image = {choosenFilePath} openSlider = {openSlider} /> : null  }
             { videoShown ? <VideoPlayer image = {choosenFilePath} openVideo = {openVideo} /> : null  }
@@ -245,9 +269,10 @@ function UserStore() {
                             if (e.type.indexOf('image') > -1) {
                                 return (
                                     <div key={id} className="file">
+                                        <div onClick={() => showFileSettingsModal(e)} className="status">&#10033;</div>
                                         <div onClick={() => deleteFile(e.path)} className="delete__button">x</div>
                                             <div onClick={() => openSlider(e.path)}>
-                                                <img width={"150px"} height={"150px"} src = {e.path}/>
+                                                <img width={"100px"} height={"100px"} src = {e.path}/>
                                             </div>
                                         <span onClick={() => changeFileName(e.fileName)}>{e.fileName}</span>
                                     </div>
@@ -256,9 +281,10 @@ function UserStore() {
                             else if (e.type.indexOf('video') > -1) {
                                 return (
                                     <div key={id} className="file">
+                                        <div onClick={() => showFileSettingsModal(e)} className="status">&#10033;</div>
                                         <div onClick={() => deleteFile(e.path)} className="delete__button">x</div>
                                             <div onClick={() => openVideo(e.path)}>
-                                                <img width={"150px"} height={"150px"} src = {videoicon}/>
+                                                <img width={"100px"} height={"100px"} src = {videoicon}/>
                                             </div>
                                         <span onClick={() => changeFileName(e.fileName)}>{e.fileName}</span>
                                     </div>
@@ -267,10 +293,11 @@ function UserStore() {
                             else if ((e.type.indexOf('application/vnd.openxmlformats-officedocument.wordprocessingml.document') > -1) || (e.type.indexOf('application/msword') > -1)) {
                                 return (
                                     <div key={id} className="file">
+                                        <div onClick={() => showFileSettingsModal(e)} className="status">&#10033;</div>
                                         <div onClick={() => deleteFile(e.path)} className="delete__button">x</div>
-                                            <a href={e.path}>
+                                            <a target="_blank" href={e.path}>
                                                 <div>
-                                                    <img width={"150px"} height={"150px"} src = {wordicon}/>
+                                                    <img width={"100px"} height={"100px"} src = {wordicon}/>
                                                 </div>
                                             </a>
                                         <span onClick={() => changeFileName(e.fileName)}>{e.fileName}</span>
@@ -280,10 +307,11 @@ function UserStore() {
                             else if (e.type.indexOf('application/pdf') > -1) {
                                 return (
                                     <div key={id} className="file">
+                                        <div onClick={() => showFileSettingsModal(e)} className="status">&#10033;</div>
                                         <div onClick={() => deleteFile(e.path)} className="delete__button">x</div>
-                                            <a href={e.path}>
+                                            <a target="_blank" href={e.path}>
                                                 <div>
-                                                    <img width={"150px"} height={"150px"} src = {pdficon}/>
+                                                    <img width={"100px"} height={"100px"} src = {pdficon}/>
                                                 </div>
                                             </a>
                                         <span onClick={() => changeFileName(e.fileName)}>{e.fileName}</span>
@@ -293,10 +321,11 @@ function UserStore() {
                             else if (e.type.indexOf('application/vnd.ms-excel') > -1) {
                                 return (
                                     <div key={id} className="file">
+                                        <div onClick={() => showFileSettingsModal(e)} className="status">&#10033;</div>
                                         <div onClick={() => deleteFile(e.path)} className="delete__button">x</div>
-                                            <a href={e.path}>
+                                            <a target="_blank" href={e.path}>
                                                 <div>
-                                                    <img width={"150px"} height={"150px"} src = {excelicon}/>
+                                                    <img width={"100px"} height={"100px"} src = {excelicon}/>
                                                 </div>
                                             </a>
                                         <span onClick={() => changeFileName(e.fileName)}>{e.fileName}</span>
@@ -306,10 +335,11 @@ function UserStore() {
                             else if (e.type.indexOf('audio') > -1) {
                                 return (
                                     <div key={id} className="file">
+                                        <div onClick={() => showFileSettingsModal(e)} className="status">&#10033;</div>
                                         <div onClick={() => deleteFile(e.path)} className="delete__button">x</div>
                                             <a href={e.path}>
                                                 <div>
-                                                    <img width={"150px"} height={"150px"} src = {audioIcon}/>
+                                                    <img width={"100px"} height={"100px"} src = {audioIcon}/>
                                                 </div>
                                             </a>
                                         <span onClick={() => changeFileName(e.fileName)}>{e.fileName}</span>
@@ -319,10 +349,11 @@ function UserStore() {
                             else if (e.type.indexOf('zip') > -1) {
                                 return (
                                     <div key={id} className="file">
+                                        <div onClick={() => showFileSettingsModal(e)} className="status">&#10033;</div>
                                         <div onClick={() => deleteFile(e.path)} className="delete__button">x</div>
                                             <a href={e.path}>
                                                 <div>
-                                                    <img width={"150px"} height={"150px"} src = {zipImage}/>
+                                                    <img width={"100px"} height={"100px"} src = {zipImage}/>
                                                 </div>
                                             </a>
                                         <span onClick={() => changeFileName(e.fileName)}>{e.fileName}</span>
@@ -333,10 +364,11 @@ function UserStore() {
                         {user?.folders?.map((e, id) => {
                             return (
                                 <div key={id} className="file">
+                                    <div onClick={() => showFolderSettingsModal(e)} className="status">&#10033;</div>
                                     <div onClick={() => deleteFolder(e.folderId)} className="delete__button">x</div>
                                         <a>
                                             <div onClick={() => getFilesFromFolders(e.folderId)}>
-                                                <img width={"150px"} height={"150px"} src = {folderImage}/>
+                                                <img width={"100px"} height={"100px"} src = {folderImage}/>
                                             </div>
                                         </a>
                                     <span onClick={() => changeFolderName(e.folderId)}>{e.folderName}</span>
@@ -349,6 +381,7 @@ function UserStore() {
                             <div onClick={() => history("/Profile")} className='item'>Мой профиль</div>
                             <div onClick={() => history("/Statistic")} className='item'>Cтатистика</div>
                             <div onClick={createFolder} className="item">Создать папку</div>
+                            <div onClick={showMemoryModal} className="item__share">Share memory</div>
                          </div>
                         <div className="header">Вместимость хранилища</div>
                         <ProgressBar percentageNew={sizeOfUserFiles} />

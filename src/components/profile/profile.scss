@@ -1,7 +1,7 @@
 .Profile {
     width: 100vw;
     height: 100vh;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(20px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -57,9 +57,9 @@
         }
     }
     & .main__content {
-        width: 800px;
-        height: 600px;
-        border: 1px solid grey;
+        width: 100vw;
+        height: 100vh;
+        //border: 1px solid grey;
         background-color: rgba(0, 0, 0, 0.5);
         display: flex;
         justify-content: center;

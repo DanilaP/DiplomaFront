@@ -2,7 +2,7 @@
     width: 100vw;
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(20px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -15,9 +15,10 @@
         flex-direction: column;
         color: white;
         font-size: 15px;
-        width: 90vw;
-        height: 90vh;
-        border: 1px solid grey;
+        width: 100vw;
+        height: 100vh;
+        box-sizing: border-box;
+        //border: 1px solid grey;
         background-color: rgba(0, 0, 0, 0.5);
 
         & .back__button {

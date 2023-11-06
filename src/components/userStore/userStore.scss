@@ -1,7 +1,8 @@
+
 .UserStore {
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(5px);
     display: flex;
     align-items: center;
@@ -52,13 +53,32 @@
                 background-color: rgba(0, 255, 255, 0.2);
             }
         }
+
+        & .item__share {
+            width: 100px;
+            height: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid aqua;
+            background-color: rgba(0, 255, 255, 0.579);
+            padding: 20px;
+            font-size: 15px;
+            color: black;
+
+            &:hover {
+                cursor: pointer;
+                color: white;
+            }
+        }
     }
     & .store {
-        width: 1180px;
+        width: 100vw;
         padding: 40px;
-        height: 600px;
+        height: 100vh;
+        box-sizing: border-box;
         background-color: rgba(0, 0, 0, 0.6);
-        border: 1px solid grey;
+        //border: 1px solid grey;
         display: flex;
         flex-direction: column;
         color: white;
@@ -125,6 +145,7 @@
             gap: 10px;
         }
         & .files {
+            position: relative;
             width: 800px;
             height: 450px;
             border: 1px solid grey;
@@ -149,8 +170,8 @@
                 border: 1px solid white;
             }
             & .file {
-                height: 150px;
-                width: 150px;
+                height: 100px;
+                width: 100px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -158,7 +179,20 @@
                 margin-top: 50px;
                 gap: 10px;
 
-                
+                & .status {
+                    color: white;
+                    width: 15px;
+                    height: 15px;
+                    position: absolute;
+                    opacity: 0;
+                    font-size: 20px;
+                    margin-left: 117px;
+                    margin-top: -45px;
+
+                    &:hover {
+                        color: aqua;
+                    }
+                }
                 & .delete__button {
                     font-size: 30px;
                     transform: scaleY(0.8);
@@ -170,16 +204,23 @@
                     }
                 }
                 & img {
-                    pointer-events: none;
+                    //pointer-events: none;
                     margin-top: -14px;
                 }
                 & span {
+                    //width: 150px;
+                    text-align: center;
 
                     &:hover {
                         color: aqua;
                     }
                 }
                 &:hover {
+
+                    & .status {
+                        //margin-top: -120px;
+                        opacity: 1;
+                    }
                     cursor: pointer;
                     //border: 1px solid aqua;
                 }

@@ -7,6 +7,39 @@
     align-items: center;
     justify-content: center;
 
+    & .settings {
+        box-sizing: border-box;
+        padding: 20px;
+        border: 1px solid grey;
+        height: 640px;
+        margin-left: -25px;
+        margin-right: 50px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        & input {
+            height: 40px;
+            width: 200px;
+            background-color: rgba(0, 0, 0, 0.297);
+            outline: none;
+            color: white;
+            box-sizing: border-box;
+            padding-left: 30px;
+            border: 1px solid white;
+        }
+
+        & button {
+            height: 30px;
+            color: black;
+            background-color: aqua;
+            border: none;
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
     & .store {
         display: grid;
         align-items: center;

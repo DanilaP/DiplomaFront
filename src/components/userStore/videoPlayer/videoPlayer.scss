@@ -6,7 +6,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-
+    z-index: 100;
+    
     & .videoPlayer__box {
         width: 1300px;
         height: 700px;

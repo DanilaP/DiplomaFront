@@ -110,7 +110,7 @@ function Statistic() {
     return (
       <div className="Statistic">
             <div className="main__statistic">
-                <div onClick={() => navigate("/Profile")} className="back__button">
+                <div onClick={() => navigate("/Store/" + userData.id)} className="back__button">
                     x
                 </div>
                 <div className="select__graphic">

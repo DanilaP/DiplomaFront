@@ -1,0 +1,64 @@
+.sharing__memory__modal {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.556);
+    backdrop-filter: blur(20px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: absolute;
+    z-index: 100;
+    color: white;
+
+    & .main {
+        width: 600px;
+        height: 400px;
+        border: 1px solid white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        background-color: black;
+
+        & input {
+            height: 35px;
+            width: 200px;
+            border: 0px;
+            border-radius: 0px;
+            font-size: 15px;
+            box-sizing: border-box;
+            padding-left: 30px;
+            outline: none;
+        }
+
+        & button {
+            width: 100px;
+            height: 50px;
+            border-top-right-radius: 20px;
+            border-bottom-left-radius: 20px;
+            background-color: rgba(240, 248, 255, 0);
+            border: 1px solid white;
+            color: white;
+
+            &:hover {
+                cursor: pointer;
+                border: 1px solid aqua;
+                color: aqua;
+            }
+        }
+
+        & .close__button {
+            font-size: 30px;
+            transform: scaleY(0.8);
+            margin-left: 500px;
+            margin-top: -300px;
+            position: absolute;
+            &:hover {
+                cursor: pointer;
+                color: aqua;
+            }
+        }
+    }
+}
