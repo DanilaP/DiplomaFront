@@ -10,6 +10,7 @@ import folderImage from '../../Images/folderImage.png';
 import pdficon from '../../Images/pdf.png';
 import excelicon from '../../Images/excel.png';
 import wordicon from '../../Images/word.png';
+import backetFile from '../../Images/backet_file.png';
 import audioIcon from '../../Images/audioIcon.png';
 import ImageSlider from './imageSlider/imageSlider';
 import VideoPlayer from './videoPlayer/videoPlayer';
@@ -22,6 +23,7 @@ import zipImage from '../../Images/allFilesIcon.png';
 import FileSettingsModal from './contextMenu/fileSettingsModal';
 import SharingMemoryModal from './sharingMemoryModal/sharingMemoryModal';
 import FolderSettingsModal from './contextMenu/folderSettingsModal';
+import UserBacket from './userBacketOfFiles/userBacket';
 
 function UserStore() {
     const history = useNavigate();
@@ -51,6 +53,9 @@ function UserStore() {
     const [changedFile, setChangedFile] = useState({});
     ///////
     const [isShowingMemoryModal, setIsShowingMemoryModal] = useState(false);
+    const [userMemory, setUserMemory] = useState(0);
+    ///////
+    const [isUserBacketActive, setIsUserBacketActive] = useState(false);
 
     const uploadFile = async (file) => {
         let formData = new FormData();
@@ -213,6 +218,13 @@ function UserStore() {
     const showMemoryModal = () => {
         isShowingMemoryModal ? setIsShowingMemoryModal(false) : setIsShowingMemoryModal(true);
     }
+    ////
+    const openUserBacket = () => {
+        isUserBacketActive ? setIsUserBacketActive(false) : setIsUserBacketActive(true);
+        if (isUserBacketActive) {
+            window.location.reload();
+        }
+    }
     useEffect(() => {
         setUser({...user, files: userObjectFiles});
         setSortedFiles(userObjectFiles);
@@ -224,6 +236,14 @@ function UserStore() {
             setUser({...user, folders: res.data.folders, files: res.data.files});
             setSortedFiles(res.data.files);
             console.log(res.data);
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+
+        $api.get(SERVADRESS + '/auth/getUserData')
+        .then((res) => {
+            setUserMemory(res.data.userData.memory);
         })
         .catch((error) => {
             console.log(error);
@@ -240,7 +260,8 @@ function UserStore() {
     })
     return (
         <div className="UserStore">
-             { isFolderSettingsActive ? <FolderSettingsModal file = {changedFile} close = {showFolderSettingsModal} /> : null }
+            { isUserBacketActive ? <UserBacket close = {openUserBacket} /> : null }
+            { isFolderSettingsActive ? <FolderSettingsModal file = {changedFile} close = {showFolderSettingsModal} /> : null }
             { isShowingMemoryModal ? <SharingMemoryModal close = {showMemoryModal} /> : null }
             { isFileSettingsActive ? <FileSettingsModal file = {changedFile} close = {showFileSettingsModal} /> : null }
             { isVideoCreatingStart ? <VideoCreator closeModal={createVideoFile} /> : null }
@@ -382,9 +403,10 @@ function UserStore() {
                             <div onClick={() => history("/Statistic")} className='item'>Cтатистика</div>
                             <div onClick={createFolder} className="item">Создать папку</div>
                             <div onClick={showMemoryModal} className="item__share">Share memory</div>
+                            <div onClick={openUserBacket} className="item">Корзина <img src = {backetFile} width={"35px"} height={"35px"}></img></div>
                          </div>
                         <div className="header">Вместимость хранилища</div>
-                        <ProgressBar percentageNew={sizeOfUserFiles} />
+                        <ProgressBar max = {userMemory} percentageNew={sizeOfUserFiles} />
                     </div>
                 </div>
             </div>

@@ -1,0 +1,63 @@
+.backet {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(20px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+
+    & .backet__main {
+        width: 500px;
+        height: 600px;
+        border: 1px solid white;
+        background-color: black;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        box-sizing: border-box;
+        padding-top: 25px;
+        gap: 10px;
+
+        & .close__button {
+            transform: scaleY(0.8);
+            font-size: 30px;
+            margin-top: -50px;
+            margin-left: 450px;
+
+            &:hover {
+                cursor: pointer;
+                color: aqua;
+            }
+        }
+
+        & .backet__file {
+            display: flex;
+            gap: 50px;
+            color: aqua;
+            width: 350px;
+            border: 1px solid white;
+            padding: 10px;
+
+            & .file__name {
+                width: 150px;
+            }
+            & .backet__settings {
+                display: flex;
+                gap: 10px;
+                color: white;
+                width: 200px;
+
+                & div:hover {
+                    cursor: pointer;
+                    color: yellow;
+                }
+            }
+        }
+        
+    }
+}
