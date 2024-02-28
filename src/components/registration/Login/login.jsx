@@ -42,7 +42,6 @@ function Login() {
         <div className="login__form">
         { isError ? <ErrorBox showModal = {() => setIsError(false)} text={"Проверьте длину пароля (не менее 6) и правильность введенного вами email"} /> : null }
             <div className="content">
-                <img src = {logo} width = {"50px"} height = {"50px"} />
                 <div>Регистрация</div>
                 <input onChange={(e) => setUserEmail(e.target.value)} type = "text" placeholder='Введите логин' />
                 <input onChange={(e) => setUserPassword(e.target.value)} type = "password" placeholder='Введите пароль' />

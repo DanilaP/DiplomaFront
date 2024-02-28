@@ -33,6 +33,13 @@
             }
         }
 
+        & .error {
+            border: 1px solid red;
+        }
+
+        & .no__error {
+            border: 1px solid white;
+        }
         & button {
             width: 250px;
             height: 40px;

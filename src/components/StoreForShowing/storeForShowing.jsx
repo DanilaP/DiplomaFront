@@ -22,7 +22,7 @@ function StoreForShowing({arrayOfFiles, arrayOfFolders}) {
     const searchFiles = () => {
         if (searchingName == "") {
             console.log(arrayOfFiles);
-            setSortedArray(sortedArray);
+            setSortedArray(arrayOfFiles.filter((el) => el.folderId === currentFolderId));
         }
         else {
             const newSortedArray = sortedArray.filter(e => e.fileName.toLowerCase().includes(searchingName.toLowerCase()));

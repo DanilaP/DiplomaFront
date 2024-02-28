@@ -9,11 +9,12 @@
     overflow-x: hidden;
     background: url(../../../Images/background.jpg);
     background-size: cover;
-    
+
     & .login__form {
         width: 100vw;
         height: 100vh;
-        backdrop-filter: blur(10px);
+        background-color: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(20px);
         display: grid;
         align-items: center;
         justify-content: center;

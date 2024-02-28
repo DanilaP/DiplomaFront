@@ -12,6 +12,7 @@ function UserStoreEnter() {
     const [showStore, setShowStore] = useState(false);
     const [userFiles, setUserFiles] = useState([]);
     const [userFolders, setUserFolders] = useState([]);
+    const [isError, setIsError] = useState(false);
 
     const sendCode = () => {
         $api.post(SERVADRESS + '/profile/getUserDataById', {id: params.id, secretAccessCode: enteredCode})
@@ -21,6 +22,7 @@ function UserStoreEnter() {
             setUserFolders(res.data.userData.folders);
         })
         .catch((error) => {
+            setIsError(true);
             console.log(error);
         })
     }
@@ -31,7 +33,7 @@ function UserStoreEnter() {
             <StoreForShowing arrayOfFolders = {userFolders} arrayOfFiles={userFiles}/> 
             : 
             <div className="secret__code__enter__form">
-                <input onChange={(e) => setEnteredCode(e.target.value)} type = "text" />
+                <input className={isError ? "error" : "no__error"} placeholder='Введите код доступа' onChange={(e) => setEnteredCode(e.target.value)} type = "text" />
                 <button onClick={sendCode}>Проверить код</button>
             </div>
             }

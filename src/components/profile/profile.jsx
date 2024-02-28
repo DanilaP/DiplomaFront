@@ -38,9 +38,9 @@ function Profile() {
             console.log(error);
         })
     }
-    const changeSecretCode = () => {
+    const changeSecretCode = async () => {
         if (secretCode != "") {
-            $api.post(SERVADRESS + '/profile/changeUserSecretCode', {newSecretAccessCode: secretCode})
+            await $api.post(SERVADRESS + '/profile/changeUserSecretCode', {newSecretAccessCode: secretCode})
             .then((res) => {
                 console.log(res);
             })
@@ -49,9 +49,6 @@ function Profile() {
             })
         }
         else return;
-    }
-    const changeTheme = () => {
-        
     }
     useEffect(() => {
         $api.get(SERVADRESS + '/auth/getUserData')

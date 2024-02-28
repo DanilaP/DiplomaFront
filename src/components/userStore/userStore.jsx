@@ -24,6 +24,7 @@ import FileSettingsModal from './contextMenu/fileSettingsModal';
 import SharingMemoryModal from './sharingMemoryModal/sharingMemoryModal';
 import FolderSettingsModal from './contextMenu/folderSettingsModal';
 import UserBacket from './userBacketOfFiles/userBacket';
+import AudioPlayer from './audioPlayer/audioPlayer';
 
 function UserStore() {
     const history = useNavigate();
@@ -56,6 +57,9 @@ function UserStore() {
     const [userMemory, setUserMemory] = useState(0);
     ///////
     const [isUserBacketActive, setIsUserBacketActive] = useState(false);
+    ///////
+    const [isAudioShown, setIsAudioShown] = useState(false);
+    const [audioPath, setAudioPath] = useState();
 
     const uploadFile = async (file) => {
         let formData = new FormData();
@@ -87,6 +91,8 @@ function UserStore() {
             case "video": setSortedFiles(user.files.filter((e) => e.type.indexOf('video') > -1));
             break;
             case "text": setSortedFiles(user.files.filter((e) => e.type.indexOf('application') > -1));
+            break;
+            case "audio": setSortedFiles(user.files.filter((e) => e.type.indexOf('audio') > -1));
             break;
             case "all": setSortedFiles(user.files);
             break;
@@ -165,6 +171,16 @@ function UserStore() {
             console.log(error);
         })
     }
+    const moveFolderToBacket = async (folder) => {
+        await $api.post(SERVADRESS + '/files/moveFolderToBacket', {folder})
+        .then((res) => {
+            setUser({...user, folders: res.data.folders});
+            console.log(res.data);
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+    }
     const getFilesFromFolders = async (folderId) => {
         await $api.post(SERVADRESS + '/getFilesFromFolder', {folderId: folderId})
         .then((res) => {
@@ -219,12 +235,26 @@ function UserStore() {
         isShowingMemoryModal ? setIsShowingMemoryModal(false) : setIsShowingMemoryModal(true);
     }
     ////
-    const openUserBacket = () => {
+    const openUserBacket = async () => {
         isUserBacketActive ? setIsUserBacketActive(false) : setIsUserBacketActive(true);
         if (isUserBacketActive) {
-            window.location.reload();
+            await $api.post(SERVADRESS + '/getFilesFromFolder', {folderId: choosenFolderId})
+            .then((res) => {
+                setUser({...user, folders: res.data.folders, files: res.data.files});
+                setSortedFiles(res.data.files);
+                console.log(res.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            })
         }
     }
+    ////
+    const openAudio = (path) => {
+        setAudioPath(path);
+        isAudioShown ? setIsAudioShown(false) : setIsAudioShown(true);
+    }
+
     useEffect(() => {
         setUser({...user, files: userObjectFiles});
         setSortedFiles(userObjectFiles);
@@ -260,7 +290,8 @@ function UserStore() {
     })
     return (
         <div className="UserStore">
-            { isUserBacketActive ? <UserBacket close = {openUserBacket} /> : null }
+            { isAudioShown ? <AudioPlayer audio={audioPath} closeModal = {openAudio} /> : null }
+            { isUserBacketActive ? <UserBacket currentFolder = {choosenFolderId} close = {openUserBacket} /> : null }
             { isFolderSettingsActive ? <FolderSettingsModal file = {changedFile} close = {showFolderSettingsModal} /> : null }
             { isShowingMemoryModal ? <SharingMemoryModal close = {showMemoryModal} /> : null }
             { isFileSettingsActive ? <FileSettingsModal file = {changedFile} close = {showFileSettingsModal} /> : null }
@@ -277,6 +308,7 @@ function UserStore() {
                     <div onClick={() => sortFiles("text")} className='div__btn'>Текстовые файлы</div>
                     <div onClick={() => sortFiles("video")} className='div__btn'>Видео файлы</div>
                     <div onClick={() => sortFiles("image")} className='div__btn'>Изображения</div>
+                    <div onClick={() => sortFiles("audio")} className='div__btn'>Аудио файлы</div>
                     <input onKeyDown={findFileByName} onChange={(e) => setFindedFileName(e.target.value)} type = "text" placeholder='Поиск файла'/>
 
                     <div className='upload__main'>
@@ -290,7 +322,8 @@ function UserStore() {
                             if (e.type.indexOf('image') > -1) {
                                 return (
                                     <div key={id} className="file">
-                                        <div onClick={() => showFileSettingsModal(e)} className="status">&#10033;</div>
+                                        <div onClick={() => showFileSettingsModal(e)} 
+                                        className={e.status == "public" ?  "status": "private__status"}>&#10033;</div>
                                         <div onClick={() => deleteFile(e.path)} className="delete__button">x</div>
                                             <div onClick={() => openSlider(e.path)}>
                                                 <img width={"100px"} height={"100px"} src = {e.path}/>
@@ -302,7 +335,8 @@ function UserStore() {
                             else if (e.type.indexOf('video') > -1) {
                                 return (
                                     <div key={id} className="file">
-                                        <div onClick={() => showFileSettingsModal(e)} className="status">&#10033;</div>
+                                        <div onClick={() => showFileSettingsModal(e)} 
+                                        className={e.status == "public" ?  "status": "private__status"}>&#10033;</div>
                                         <div onClick={() => deleteFile(e.path)} className="delete__button">x</div>
                                             <div onClick={() => openVideo(e.path)}>
                                                 <img width={"100px"} height={"100px"} src = {videoicon}/>
@@ -314,7 +348,8 @@ function UserStore() {
                             else if ((e.type.indexOf('application/vnd.openxmlformats-officedocument.wordprocessingml.document') > -1) || (e.type.indexOf('application/msword') > -1)) {
                                 return (
                                     <div key={id} className="file">
-                                        <div onClick={() => showFileSettingsModal(e)} className="status">&#10033;</div>
+                                        <div onClick={() => showFileSettingsModal(e)} 
+                                        className={e.status == "public" ?  "status": "private__status"}>&#10033;</div>
                                         <div onClick={() => deleteFile(e.path)} className="delete__button">x</div>
                                             <a target="_blank" href={e.path}>
                                                 <div>
@@ -328,7 +363,8 @@ function UserStore() {
                             else if (e.type.indexOf('application/pdf') > -1) {
                                 return (
                                     <div key={id} className="file">
-                                        <div onClick={() => showFileSettingsModal(e)} className="status">&#10033;</div>
+                                        <div onClick={() => showFileSettingsModal(e)} 
+                                        className={e.status == "public" ?  "status": "private__status"}>&#10033;</div>
                                         <div onClick={() => deleteFile(e.path)} className="delete__button">x</div>
                                             <a target="_blank" href={e.path}>
                                                 <div>
@@ -342,7 +378,8 @@ function UserStore() {
                             else if (e.type.indexOf('application/vnd.ms-excel') > -1) {
                                 return (
                                     <div key={id} className="file">
-                                        <div onClick={() => showFileSettingsModal(e)} className="status">&#10033;</div>
+                                        <div onClick={() => showFileSettingsModal(e)} 
+                                        className={e.status == "public" ?  "status": "private__status"}>&#10033;</div>
                                         <div onClick={() => deleteFile(e.path)} className="delete__button">x</div>
                                             <a target="_blank" href={e.path}>
                                                 <div>
@@ -356,9 +393,10 @@ function UserStore() {
                             else if (e.type.indexOf('audio') > -1) {
                                 return (
                                     <div key={id} className="file">
-                                        <div onClick={() => showFileSettingsModal(e)} className="status">&#10033;</div>
+                                        <div onClick={() => showFileSettingsModal(e)} 
+                                        className={e.status == "public" ?  "status": "private__status"}>&#10033;</div>
                                         <div onClick={() => deleteFile(e.path)} className="delete__button">x</div>
-                                            <a href={e.path}>
+                                            <a onClick={() => openAudio(e.path)}>
                                                 <div>
                                                     <img width={"100px"} height={"100px"} src = {audioIcon}/>
                                                 </div>
@@ -370,7 +408,8 @@ function UserStore() {
                             else if (e.type.indexOf('zip') > -1) {
                                 return (
                                     <div key={id} className="file">
-                                        <div onClick={() => showFileSettingsModal(e)} className="status">&#10033;</div>
+                                        <div onClick={() => showFileSettingsModal(e)} 
+                                        className={e.status == "public" ?  "status": "private__status"}>&#10033;</div>
                                         <div onClick={() => deleteFile(e.path)} className="delete__button">x</div>
                                             <a href={e.path}>
                                                 <div>
@@ -383,18 +422,24 @@ function UserStore() {
                             }
                         })}
                         {user?.folders?.map((e, id) => {
-                            return (
-                                <div key={id} className="file">
-                                    <div onClick={() => showFolderSettingsModal(e)} className="status">&#10033;</div>
-                                    <div onClick={() => deleteFolder(e.folderId)} className="delete__button">x</div>
-                                        <a>
-                                            <div onClick={() => getFilesFromFolders(e.folderId)}>
-                                                <img width={"100px"} height={"100px"} src = {folderImage}/>
-                                            </div>
-                                        </a>
-                                    <span onClick={() => changeFolderName(e.folderId)}>{e.folderName}</span>
-                                </div>
-                            )
+                            if (e.isDeleted !== true) {
+                                return (
+                                    <div key={id} className="file">
+                                        <div onClick={() => showFolderSettingsModal(e)} 
+                                        className={e.status == "public" ?  "status": "private__status"}>&#10033;</div>
+                                        <div onClick={() => moveFolderToBacket(e)} className="delete__button">x</div>
+                                            <a>
+                                                <div onClick={() => getFilesFromFolders(e.folderId)}>
+                                                    <img width={"100px"} height={"100px"} src = {folderImage}/>
+                                                </div>
+                                            </a>
+                                        <span onClick={() => changeFolderName(e.folderId)}>{e.folderName}</span>
+                                    </div>
+                                )
+                            }
+                            else {
+                                return null;
+                            }
                         })}
                     </div>
                     <div className="storage__settings">
@@ -403,7 +448,7 @@ function UserStore() {
                             <div onClick={() => history("/Statistic")} className='item'>Cтатистика</div>
                             <div onClick={createFolder} className="item">Создать папку</div>
                             <div onClick={showMemoryModal} className="item__share">Share memory</div>
-                            <div onClick={openUserBacket} className="item">Корзина <img src = {backetFile} width={"35px"} height={"35px"}></img></div>
+                            <div onClick={openUserBacket} className="item">Корзина <img src = {backetFile} width={"20px"} height={"20px"}></img></div>
                          </div>
                         <div className="header">Вместимость хранилища</div>
                         <ProgressBar max = {userMemory} percentageNew={sizeOfUserFiles} />

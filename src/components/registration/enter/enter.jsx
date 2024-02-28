@@ -46,7 +46,6 @@ function Enter() {
     return (
         <div className="Enter">
             <div className="content">
-                <img src = {logo} width={"50px"} height={"50px"} />
                 <div className='text'>Вход</div>
                 <input onChange={(e) => {setUserLogin(e.target.value)}} placeholder='Ваш логин' type = "text" /> 
                 <input onChange={(e) => {setUserPassword(e.target.value)}} placeholder='Ваш пароль' type = "password" /> 
