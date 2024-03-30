@@ -26,7 +26,7 @@ function Enter() {
         }
         let rule = /^[\w]{1}[\w-\.]*@[\w-]+\.[a-z]{2,4}$/i;
         if ((userPassword.length >= 6) && (rule.test(userLogin))) {
-            await $api.post('https://backend-danila123.amvera.io/auth/login', userData)
+            await $api.post(SERVADRESS + '/auth/login', userData)
             .then((res) => {
                 localStorage.setItem("token", res.data.token);
                 history("/Profile");

@@ -19,14 +19,19 @@ function SharingMemoryModal({close}) {
     }
 
     const shareMemory = async () => {
-        await $api.post(SERVADRESS + '/shareUserMemory', {userId: userSharingToId, memory: Number(sharingMemory)})
-        .then((res) => {
-            console.log(res);
-            close();
-        })
-        .catch((err) => {
-            console.log(err);
-        })
+        if (calcalateFreeUserMemory() <= sharingMemory) {
+            alert("Недостаточно памяти!");
+        }
+        else {
+            await $api.post(SERVADRESS + '/shareUserMemory', {userId: userSharingToId, memory: Number(sharingMemory)})
+            .then((res) => {
+                console.log(res);
+                close();
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+        }
     }
     useEffect(() => {
         $api.get(SERVADRESS + '/auth/getUserData')

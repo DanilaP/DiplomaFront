@@ -137,12 +137,15 @@ function StoreForShowing({arrayOfFiles, arrayOfFolders}) {
                     }
                 })}
                 {sortedArrayOfFolders?.map((e) => {
-                    return (
-                        <div onClick={() => goToFolder(e.folderId)} key={e.folderId} className="file">
-                            <img width={"150px"} height={"150px"} src = {foldericon}/>
-                            <span>{e.folderName}</span>
-                        </div>
-                    )
+                    if (e.isDeleted == false) {
+                        return (
+                            <div onClick={() => goToFolder(e.folderId)} key={e.folderId} className="file">
+                                <img width={"150px"} height={"150px"} src = {foldericon}/>
+                                <span>{e.folderName}</span>
+                            </div>
+                        )
+                    }
+                    else return null;
                 })}
             </div>
         </div>

@@ -172,7 +172,7 @@ function UserStore() {
         })
     }
     const moveFolderToBacket = async (folder) => {
-        await $api.post(SERVADRESS + '/files/moveFolderToBacket', {folder})
+        await $api.post(SERVADRESS + '/files/moveFolderToBacket', {folder,  parentFolderId: choosenFolderId})
         .then((res) => {
             setUser({...user, folders: res.data.folders});
             console.log(res.data);
