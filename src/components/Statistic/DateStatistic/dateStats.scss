@@ -1,0 +1,25 @@
+.DateStats {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 90vw;
+    height: 90vh;
+    background-color: rgba(0, 0, 0);
+    position: absolute;
+    z-index: 10;
+
+    & .close__button {
+        position: absolute;
+        color: white;
+        font-size: 30px;
+        transform: scaleY(0.8);
+        margin-left: 1290px;
+        margin-top: -600px;
+
+        &:hover {
+            cursor: pointer;
+            color: aqua;
+        }
+    }
+}

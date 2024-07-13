@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './profile.scss';
 import $api from '../../api';
@@ -14,6 +14,7 @@ function Profile() {
     const [showModal, setShowModal] = useState(false);
     const [secretCode, setSecretCode] = useState("");
     const theme = useSelector(store => store.theme);
+    const inputRef = useRef();
 
     const goBack = () => {
         history('/Store');
@@ -42,6 +43,7 @@ function Profile() {
         if (secretCode != "") {
             await $api.post(SERVADRESS + '/profile/changeUserSecretCode', {newSecretAccessCode: secretCode})
             .then((res) => {
+                inputRef.current.value = "";
                 console.log(res);
             })
             .catch((error) => {
@@ -78,7 +80,7 @@ function Profile() {
                         <div className="user__password">**********</div>
                     </div>
                     <div className="change__secret__code">
-                        <input placeholder='Новый код доступа' onChange={(e) => setSecretCode(e.target.value)} type = "text" />
+                        <input ref = {inputRef} placeholder='Новый код доступа' onChange={(e) => setSecretCode(e.target.value)} type = "text" />
                         <button onClick={changeSecretCode}>Send</button>
                     </div>
                     <div className="link__to__show__store">

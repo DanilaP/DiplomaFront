@@ -12,6 +12,7 @@ import excelicon from '../../Images/excel.png';
 import wordicon from '../../Images/word.png';
 import backetFile from '../../Images/backet_file.png';
 import audioIcon from '../../Images/audioIcon.png';
+import imageIcon from '../../Images/imageIcon.png';
 import ImageSlider from './imageSlider/imageSlider';
 import VideoPlayer from './videoPlayer/videoPlayer';
 import { useSelector } from 'react-redux';
@@ -25,6 +26,7 @@ import SharingMemoryModal from './sharingMemoryModal/sharingMemoryModal';
 import FolderSettingsModal from './contextMenu/folderSettingsModal';
 import UserBacket from './userBacketOfFiles/userBacket';
 import AudioPlayer from './audioPlayer/audioPlayer';
+
 
 function UserStore() {
     const history = useNavigate();
@@ -256,6 +258,9 @@ function UserStore() {
     }
 
     useEffect(() => {
+        console.log(window.innerHeight, window.innerWidth);
+    })
+    useEffect(() => {
         setUser({...user, files: userObjectFiles});
         setSortedFiles(userObjectFiles);
         sortFiles(parametrOfSort);
@@ -303,12 +308,12 @@ function UserStore() {
             { isCreateFolder ? <CreatedFolderModal updateUserFolders = {updateUserFolders} choosenFolderId = {choosenFolderId} hide = {createFolder} /> : null }
             <div className="store">
                 <div className="store__menu">
-                    <button onClick={backToFolder} className="back__to__folder__button">Назад</button>
-                    <div onClick={() => sortFiles("all")} className='div__btn'>Все файлы</div>
-                    <div onClick={() => sortFiles("text")} className='div__btn'>Текстовые файлы</div>
-                    <div onClick={() => sortFiles("video")} className='div__btn'>Видео файлы</div>
-                    <div onClick={() => sortFiles("image")} className='div__btn'>Изображения</div>
-                    <div onClick={() => sortFiles("audio")} className='div__btn'>Аудио файлы</div>
+                    <button onClick={backToFolder} className="back__to__folder__button">&#8656;</button>
+                    <div className='div__btn' onClick={() => sortFiles("all")}>Все файлы</div>
+                    <div className='div__btn' width={"50px"} height={"50px"} onClick={() => sortFiles("text")}>Текстовые файлы</div>
+                    <div className='div__btn' width={"50px"} height={"50px"} onClick={() => sortFiles("video")}>Видео файлы</div>
+                    <div className='div__btn' width={"50px"} height={"50px"} onClick={() => sortFiles("image")}>Изображения</div>
+                    <div className='div__btn' width={"50px"} height={"50px"} onClick={() => sortFiles("audio")}>Аудио файлы</div>
                     <input onKeyDown={findFileByName} onChange={(e) => setFindedFileName(e.target.value)} type = "text" placeholder='Поиск файла'/>
 
                     <div className='upload__main'>
@@ -445,9 +450,8 @@ function UserStore() {
                     <div className="storage__settings">
                         <div className="navigation__menu">
                             <div onClick={() => history("/Profile")} className='item'>Мой профиль</div>
-                            <div onClick={() => history("/Statistic")} className='item'>Cтатистика</div>
                             <div onClick={createFolder} className="item">Создать папку</div>
-                            <div onClick={showMemoryModal} className="item__share">Share memory</div>
+                            <div onClick={showMemoryModal} className="item">Поделиться</div>
                             <div onClick={openUserBacket} className="item">Корзина <img src = {backetFile} width={"20px"} height={"20px"}></img></div>
                          </div>
                         <div className="header">Вместимость хранилища</div>

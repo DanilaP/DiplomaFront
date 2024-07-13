@@ -6,6 +6,7 @@ import { Bar, Pie } from 'react-chartjs-2';
 import {Chart as Chart} from 'chart.js/auto';
 import { useNavigate } from 'react-router-dom';
 import SERVADRESS from "../servAdress";
+import DateStats from './DateStatistic/dateStats';
 
 function Statistic() {
     const [userData, setUserData] = useState();
@@ -33,6 +34,7 @@ function Statistic() {
             count: 0,
         },
     ]);
+    const [showNewStatisticModal, setShowNewStatisticModal] = useState(false);
 
     let labels = ["Изображения", "Аудио-файлы", "Видео-файлы", "Текстовые файлы/таблицы", "Архивы"];
     let data = {
@@ -79,6 +81,9 @@ function Statistic() {
             })
             setCountOfFilesByType(newInfo);
         }
+        else if (choosenInfo ==="third") {
+            setShowNewStatisticModal(true);
+        }
         else {
             setChoosenGraphic(true);
             userData.files.map((file) => {
@@ -109,14 +114,16 @@ function Statistic() {
     }, [])
     return (
       <div className="Statistic">
+        { showNewStatisticModal ? <DateStats userData={userData} close = {() => setShowNewStatisticModal(false)} /> : null }
             <div className="main__statistic">
                 <div onClick={() => navigate("/Store/" + userData.id)} className="back__button">
                     x
                 </div>
                 <div className="select__graphic">
                     <select onChange={(e) => changeGraphicsInfo(e.target.value)}  name="choice">
-                        <option value="first">Количество файлов</option>
-                        <option value="second">Занимаемая память</option>
+                        <option value="first">Количество файлов (шт)</option>
+                        <option value="second">Занимаемая память (мб)</option>
+                        <option value="third">Статистика по датам</option>
                     </select>
                 </div>
                 <div className="graphics">
