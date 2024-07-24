@@ -5,7 +5,6 @@ import $api from '../../api';
 import { useState } from 'react';
 import Modal from './changePasswordModal/modal';
 import SERVADRESS from "../servAdress";
-import { useSelector } from 'react-redux';
 
 
 function Profile() {
@@ -13,8 +12,8 @@ function Profile() {
     const [user, setUser] = useState({});
     const [showModal, setShowModal] = useState(false);
     const [secretCode, setSecretCode] = useState("");
-    const theme = useSelector(store => store.theme);
     const inputRef = useRef();
+    const messageRef = useRef();
 
     const goBack = () => {
         history('/Store');
@@ -52,6 +51,13 @@ function Profile() {
         }
         else return;
     }
+    const copyLink = async () => {
+        navigator.clipboard.writeText("http://localhost:3000/SecretAccessForm/"+user.id)
+        .then(() => {
+            messageRef.current.style.animation = "opacityAnimation 1s"; 
+        })
+        messageRef.current.style.animation = "";
+    }
     useEffect(() => {
         $api.get(SERVADRESS + '/auth/getUserData')
         .then((res) => {
@@ -84,7 +90,8 @@ function Profile() {
                         <button onClick={changeSecretCode}>Send</button>
                     </div>
                     <div className="link__to__show__store">
-                        <p>{"http://localhost:3000/SecretAccessForm/"+user.id}</p>
+                        <div ref={messageRef} className="message__about__copying">Ссылка скопирована!</div>
+                        <p onClick={copyLink}>Ссылка на хранилище</p>
                     </div>
                     <div className="settings">
                         <button onClick={changePassword}>Сменить пароль</button>

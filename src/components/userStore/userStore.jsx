@@ -40,28 +40,23 @@ function UserStore() {
     const [videoShown, setVideoShown] = useState();
     const [choosenFilePath, setChoosenFilePath] = useState();
     const [findedFileName, setFindedFileName] = useState();
-    
     const userObjectFiles = useSelector(store => store.userFiles);
-
     const [choosenFolderId, setChoosenFolderId] = useState(0);
     const [isChangeFolderName, setIsChangeFolderName] = useState(false);
     const [historyOfFolders, setHistoryOfFolders] = useState([0]);
     const [historyOfLastFolder, setHistoryOfLastFolder] = useState();
     const [isCreateFolder, setIsCreateFolder] = useState(false);
-
     const [isVideoCreatingStart, setIsVideoCreatingStart] = useState(false);
-    ////////
     const [isFileSettingsActive, setIsFileSettingsActive] = useState(false);
     const [isFolderSettingsActive, setIsFolderSettingsActive] = useState(false);
     const [changedFile, setChangedFile] = useState({});
-    ///////
     const [isShowingMemoryModal, setIsShowingMemoryModal] = useState(false);
     const [userMemory, setUserMemory] = useState(0);
-    ///////
     const [isUserBacketActive, setIsUserBacketActive] = useState(false);
-    ///////
     const [isAudioShown, setIsAudioShown] = useState(false);
     const [audioPath, setAudioPath] = useState();
+    const [choosenFile, setChoosenFile] = useState();
+    const [currentPath, setCurrentPath] = useState("root");
 
     const uploadFile = async (file) => {
         let formData = new FormData();
@@ -141,12 +136,14 @@ function UserStore() {
         sum = sum.toFixed(2);
         setSizeOfUserFiles(sum);
     }
-    const openVideo = (path) => {
-        setChoosenFilePath(path);
+    const openVideo = (currentFile) => {
+        setChoosenFilePath(currentFile.path);
+        setChoosenFile(currentFile);
         videoShown ? setVideoShown(false) : setVideoShown(true);
     }
-    const openSlider = (path) => {
-        setChoosenFilePath(path);
+    const openSlider = (e) => {
+        setChoosenFile(e);
+        setChoosenFilePath(e.path);
         sliderShown ? setSliderShown(false) : setSliderShown(true);
     }
     const findFileByName = (e) => {
@@ -183,13 +180,14 @@ function UserStore() {
             console.log(error);
         })
     }
-    const getFilesFromFolders = async (folderId) => {
+    const getFilesFromFolders = async (folderId, folderName) => {
         await $api.post(SERVADRESS + '/getFilesFromFolder', {folderId: folderId})
         .then((res) => {
             setUser({...user, folders: res.data.folders, files: res.data.files});
             setSortedFiles(res.data.files);
             setChoosenFolderId(folderId);
             setHistoryOfFolders([...historyOfFolders, folderId]);
+            setCurrentPath(currentPath + "/" + folderName);
             console.log(res.data);
         })
         .catch((error) => {
@@ -209,6 +207,11 @@ function UserStore() {
             setUser({...user, folders: res.data.folders, files: res.data.files});
             setSortedFiles(res.data.files);
             setChoosenFolderId(lastFolder);
+
+            let currentFolders = currentPath.split("/");
+            if (currentFolders.length !== 1) {
+                setCurrentPath(currentFolders.filter((el, index) => index !== currentFolders.length-1).join("/"));
+            }
             if (historyOfFolders.length !== 1) {
                 let newHistory = historyOfFolders;
                 newHistory.pop();
@@ -301,8 +304,8 @@ function UserStore() {
             { isShowingMemoryModal ? <SharingMemoryModal close = {showMemoryModal} /> : null }
             { isFileSettingsActive ? <FileSettingsModal file = {changedFile} close = {showFileSettingsModal} /> : null }
             { isVideoCreatingStart ? <VideoCreator closeModal={createVideoFile} /> : null }
-            { sliderShown ? <ImageSlider image = {choosenFilePath} openSlider = {openSlider} /> : null  }
-            { videoShown ? <VideoPlayer image = {choosenFilePath} openVideo = {openVideo} /> : null  }
+            { sliderShown ? <ImageSlider file = {choosenFile} image = {choosenFilePath} openSlider = {openSlider} /> : null  }
+            { videoShown ? <VideoPlayer file = {choosenFile} image = {choosenFilePath} openVideo = {openVideo} /> : null  }
             { isChangeFileName ? <ChangeFileNameModal updateFiles = {updateFiles} previosname = {previosname} hide = {changeFileName} /> : null }
             { isChangeFolderName ? <ChangeFolderNameModal changeFolders = {updateFolders} folderId = {choosenFolderId} hide = {changeFolderName} /> : null }
             { isCreateFolder ? <CreatedFolderModal updateUserFolders = {updateUserFolders} choosenFolderId = {choosenFolderId} hide = {createFolder} /> : null }
@@ -321,6 +324,7 @@ function UserStore() {
                         <div className='upload__file'>Загрузить файл</div>
                     </div>
                 </div>
+                <div className="current__path">Текущий путь: {currentPath}</div>
                 <div className="storage__files">
                     <div className="files">
                         {sortedFiles?.map((e, id) => {
@@ -330,7 +334,7 @@ function UserStore() {
                                         <div onClick={() => showFileSettingsModal(e)} 
                                         className={e.status == "public" ?  "status": "private__status"}>&#10033;</div>
                                         <div onClick={() => deleteFile(e.path)} className="delete__button">x</div>
-                                            <div onClick={() => openSlider(e.path)}>
+                                            <div onClick={() => openSlider(e)}>
                                                 <img width={"100px"} height={"100px"} src = {e.path}/>
                                             </div>
                                         <span onClick={() => changeFileName(e.fileName)}>{e.fileName}</span>
@@ -343,7 +347,7 @@ function UserStore() {
                                         <div onClick={() => showFileSettingsModal(e)} 
                                         className={e.status == "public" ?  "status": "private__status"}>&#10033;</div>
                                         <div onClick={() => deleteFile(e.path)} className="delete__button">x</div>
-                                            <div onClick={() => openVideo(e.path)}>
+                                            <div onClick={() => openVideo(e)}>
                                                 <img width={"100px"} height={"100px"} src = {videoicon}/>
                                             </div>
                                         <span onClick={() => changeFileName(e.fileName)}>{e.fileName}</span>
@@ -434,7 +438,7 @@ function UserStore() {
                                         className={e.status == "public" ?  "status": "private__status"}>&#10033;</div>
                                         <div onClick={() => moveFolderToBacket(e)} className="delete__button">x</div>
                                             <a>
-                                                <div onClick={() => getFilesFromFolders(e.folderId)}>
+                                                <div onClick={() => getFilesFromFolders(e.folderId, e.folderName)}>
                                                     <img width={"100px"} height={"100px"} src = {folderImage}/>
                                                 </div>
                                             </a>
@@ -451,7 +455,6 @@ function UserStore() {
                         <div className="navigation__menu">
                             <div onClick={() => history("/Profile")} className='item'>Мой профиль</div>
                             <div onClick={createFolder} className="item">Создать папку</div>
-                            <div onClick={showMemoryModal} className="item">Поделиться</div>
                             <div onClick={openUserBacket} className="item">Корзина <img src = {backetFile} width={"20px"} height={"20px"}></img></div>
                          </div>
                         <div className="header">Вместимость хранилища</div>

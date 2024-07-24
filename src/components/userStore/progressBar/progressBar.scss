@@ -10,27 +10,14 @@
         color: black;
         margin-top: -37px;
     }
-}
-@media screen and (max-width: 800px) {
-    .ProgressBar {
-        & progress {
-            margin-top: -10px;
-            margin-left: 40px;
-        }
-        & span {
-            margin-left: 40px;
-            margin-top: -37px;
-        }
+    & .bar__header {
+        display: none; 
     }
 }
-@media screen and (max-width: 585px) {
+@media screen and (max-width: 610px) {
     .ProgressBar {
-        & progress {
-            margin-left: 10px;
-            margin-right: 20px;
-        }
-        & span {
-            margin-left: -10px;
+        & .bar__header {
+            display: block;
         }
     }
 }

@@ -1,3 +1,13 @@
+@keyframes opacityAnimation {
+    from {
+        opacity: 0;
+        visibility: hidden;
+    }
+    to {
+        visibility: visible;
+        opacity: 1;
+    }
+}
 .Profile {
     width: 100vw;
     height: 100vh;
@@ -9,6 +19,15 @@
     & .link__to__show__store {
         margin-bottom: 30px;
         color: white;
+
+        & p:hover {
+            cursor: pointer;
+            color: aqua;
+        }
+        & .message__about__copying {
+            visibility: hidden;
+            transition: 1s;
+        }
     }
     & .change__secret__code {
         width: 100%;

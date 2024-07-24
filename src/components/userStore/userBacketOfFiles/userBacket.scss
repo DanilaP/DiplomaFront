@@ -17,7 +17,6 @@
         color: white;
         display: flex;
         align-items: center;
-        //justify-content: center;
         flex-direction: column;
         box-sizing: border-box;
         padding-top: 25px;
@@ -59,5 +58,34 @@
             }
         }
         
+    }
+}
+@media screen and (max-width: 538px) {
+    .backet {
+
+        & .backet__main {
+            width: 410px;
+
+            & .close__button {
+                margin-left: 370px;
+            }
+        }
+    }
+}
+@media screen and (max-width: 440px) {
+    .backet {
+
+        & .backet__main {
+            width: 310px;
+
+            & .backet__file {
+                width: 250px;
+                font-size: 14px;
+            }
+
+            & .close__button {
+                margin-left: 270px;
+            }
+        }
     }
 }
